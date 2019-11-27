@@ -3,6 +3,7 @@
 #include <string>
 #include "observer.h"
 #include "blockinfo.h"
+#include "playerinfo.h"
 using namespace std;
 
 class Cell;
@@ -13,7 +14,7 @@ class Board: public Observer<blockInfo> {
   vector<vector<Cell>> myBoard;
   Board* oppBoard;
   int score = 0;
-  int level = 0;
+  int level;
 
   Block* currBlock;
   char nextBlock;
@@ -24,6 +25,8 @@ class Board: public Observer<blockInfo> {
  public:
   ~Board();
   
+  Board(const TextDisplay &td, const GraphicsDisplay &gd, int level = 0);
+  // should it take in pointer in order for us to attach stuff??? but we want const right idk
   void levelChange(int newlevel);
   bool move(int player, string action); // again same as in biquadris, ask eircnsi and jenn
   void rotate(int times, char direction); // i thought that the move function gets rid of the need for rotate n drop n stuff in board???  
@@ -42,8 +45,10 @@ class Board: public Observer<blockInfo> {
   bool isRowFull(int rownum);
   void clearRow(int rownum);
 
-  getInfo(); // who is calling this huh display?? idk what the return type should be, do i need to create 'boardinfo'??
   vector<vector<Cell>> &getBoard();
+  playerInfo getInfo() {
+    return {level, score, nextBlock};
+  };
 
   void notify(Subject<blockInfo> &whoNotified) override;
 };
