@@ -13,7 +13,6 @@ class Cell: public Subject<cellInfo> {
   
  public:
   Cell(int x, int y, bool isFilled, char type, Block* owner);
-  ~Cell();
 
   cellInfo getInfo();
   void setType(char toType);
