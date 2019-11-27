@@ -6,12 +6,14 @@
 //class Cell;
 
 class TextDisplay: public AbsDisplay {
-  std::vector<std::vector<char>> theDisplay;
+  std::vector<std::vector<char>> display1;
+  std::vector<std::vector<char>> display2;
  public:
-  TextDisplay(int width, int height);
+  TextDisplay(int rows, int cols);
 
   void notify(Subject<cellInfo> &whoNotified) override;
   void print(int player = 0);  // player = the one we add blind to, 0 means neither
+  string TextDisplay::rowString(int player, int row, string blind = "");
 };
 
 #endif

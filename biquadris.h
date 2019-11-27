@@ -1,16 +1,10 @@
 #ifndef BIQUADRIS_H
 #define BIQUADRIS_H
-#include "cellinfo.h"
 #include "playerinfo.h"
 #include "board.h"
+#include "textdisplay.h"
+#include "gdisplay.h"
 using namespace std;
-
-class Cell;
-class Board;
-class TextDisplay;
-class GraphicsDisplay;
-template <typename InfoType> class Observer;
-// class InvalidMove{};
 
 class Biquadris {
   Board player1;
@@ -18,11 +12,9 @@ class Biquadris {
   TextDisplay *td = nullptr;
   GraphicsDisplay *gd = nullptr;
   
-  // Add private members, if necessary.
   int turn = 1;
   int highscore = 0;
-  int boardHeight;
-  int boardWidth;
+  int boardHeight, boardWidth;
 
  public:
   ~Biquadris();
@@ -32,6 +24,7 @@ class Biquadris {
   void restartGame();
   void updateDisplays(playerInfo player1, playerInfo player2);
   bool move(int player, string action); // uhh idk what this returns and i guessed what the params meant, ask ericsons n jenn
+  void boardsPrint(bool blind1, bool blind2);
 };
 
 #endif

@@ -7,7 +7,7 @@ class Cell;
 class GraphicsDisplay: public AbsDisplay {
   Xwindow theGDisplay;
  public:
-  GraphicsDisplay(int width, int height);
+  GraphicsDisplay(int rows, int cols);
 
   void notify(Subject<cellInfo> &whoNotified) override;
   void addBlind(int player);
