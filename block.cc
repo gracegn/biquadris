@@ -144,24 +144,39 @@ void Block::move(string action, int repeats) {
         for (int j = 0; j < parts.size(); ++j) {
                 cellInfo currInfo = parts.at(j).getInfo();
 
-                // cannot move left any further
-                if (currInfo.x == 0) {
+                // cannot move right any further
+                if (currInfo.y == 10) {
                     return;
                 }
                 else if (currInfo.isFilled) {
                     // if the cell at position x,y is filled in our block object,
                     // make sure it's not filled in the cell we want to move to.
-                    if (board.at(currInfo.x).at(currInfo.y - 1).getInfo().isFilled) {
+                    if (board.at(currInfo.x).at(currInfo.y + 1).getInfo().isFilled) {
                         return;
                     }
                 }
         }
-
         ++info.llx;
         for (Cell cell : parts) {
             cell.addToX(1);
         }
     } else if (action == "down") {
+
+        for (int j = 0; j < parts.size(); ++j) {
+                cellInfo currInfo = parts.at(j).getInfo();
+
+                // cannot move down any further
+                if (currInfo.x == 17) {
+                    return;
+                }
+                else if (currInfo.isFilled) {
+                    // if the cell at position x,y is filled in our block object,
+                    // make sure it's not filled in the cell we want to move to.
+                    if (board.at(currInfo.x + 1).at(currInfo.y).getInfo().isFilled) {
+                        return;
+                    }
+                }
+        }
         ++info.lly;
         for (Cell cell : parts) {
             cell.addToY(-1);
