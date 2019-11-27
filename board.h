@@ -43,6 +43,7 @@ class Board: public Observer<blockInfo> {
   void clearRow(int rownum);
 
   getInfo(); // who is calling this huh display?? idk what the return type should be, do i need to create 'boardinfo'??
+  vector<vector<Cell>> &getBoard();
 
   void notify(Subject<blockInfo> &whoNotified) override;
 };
