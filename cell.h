@@ -7,11 +7,16 @@ class Block;
 
 class Cell: public Subject<cellInfo> {
   
-  cellInfo info;
+  int x, y;
+  bool isFilled;
+  char type;
   Block* owner;
   
  public:
   ~Cell();
+  cellInfo getInfo() {
+    return {x, y, isFilled, type};
+  };
   
   void clear();
 };

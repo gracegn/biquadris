@@ -19,35 +19,28 @@ class Board: public Observer<blockInfo> {
   Block* currBlock;
   char nextBlock;
 
-  bool isHeavy;
+  bool isHeavy; // from opponent's special action
   bool isBlind;
 
  public:
   ~Board();
   
-  Board(const TextDisplay &td, const GraphicsDisplay &gd, int level = 0);
-  // should it take in pointer in order for us to attach stuff??? but we want const right idk
+  Board(int level = 0);
   void levelChange(int newlevel);
-  bool move(int player, string action); // again same as in biquadris, ask eircnsi and jenn
-  void rotate(int times, char direction); // i thought that the move function gets rid of the need for rotate n drop n stuff in board???  
-  void drop();
+  bool move(int player, string action);
 
+  void endTurn();
   Block* createBlock();
 
   void specialAction();
   void toggleBlind();
-  void increaseHeavy();
+  void setHeavy();
   void setNextBlock(char newtype);
 
-  void setCurrBlock(char newtype);
-
-  void endTurn();   // what the heck is this for
   bool isRowFull(int rownum);
   void clearRow(int rownum);
 
-  playerInfo getInfo() {
-    return {level, score, nextBlock};
-  };
+  playerInfo getInfo();
 
   void notify(Subject<blockInfo> &whoNotified) override;
 };
