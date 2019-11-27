@@ -5,7 +5,7 @@ using namespace std;
 // we chose to have the constructor interpret the type of block to create,
 // as having a class for each block type would clutter up the file system
 // while sharing the exact same methods for everything but the constructor.
-Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard) {
+Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard) : info{level, type, 3, 0} {
 
     // each cells' parts vector is a vector of cells the size of the
     // smallest rectangle that encompasses the whole block. For example,
@@ -16,7 +16,6 @@ Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard) {
     // our starting "bottom left" position is always the same, in our design.
     // we have to "add 3" to each row index to accomodate for the 3 extra
     // rows above where the block would be created.
-    info = blockInfo{level, type, 3, 0};
     board = gameBoard;
 
     if (type == 'O') {

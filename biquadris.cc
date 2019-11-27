@@ -13,8 +13,8 @@ void Biquadris::newGame(int rows = 15, int cols = 11) {
     td = new TextDisplay{rows, cols};
     gd = new GraphicsDisplay{rows, cols};
     
-    player1 = Board(*td, *gd);
-    player2 = Board(*td, *gd);
+    player1 = Board(); // level param
+    player2 = Board();
 }
 
 void Biquadris::restartGame() {
@@ -23,8 +23,8 @@ void Biquadris::restartGame() {
     delete gd;
     gd = new GraphicsDisplay{boardHeight, boardWidth};
 
-    player1 = Board(*td, *gd);
-    player2 = Board(*td, *gd);
+    player1 = Board();
+    player2 = Board();
     turn = 1;
     // editing the highscore should be in the function that updates score
 }

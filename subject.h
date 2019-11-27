@@ -7,7 +7,7 @@ template <typename InfoType> class Observer;
 
 template <typename InfoType> class Subject {
   std::vector<Observer<InfoType>*> observers;
-  InfoType info;
+  InfoType info = 0;
  protected:
   void setInfo(InfoType newInfo);
  public:
@@ -31,4 +31,5 @@ void Subject<InfoType>::setInfo(InfoType newInfo) { info = newInfo; }
 
 template <typename InfoType>
 InfoType Subject<InfoType>::getInfo() const { return info; }
+
 #endif
