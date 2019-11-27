@@ -13,6 +13,7 @@ class Cell: public Subject<cellInfo> {
   Block* owner;
   
  public:
+  Cell(int x, int y, bool isFilled, char type, Block* owner);
   ~Cell();
   cellInfo getInfo() {
     return {x, y, isFilled, type};
