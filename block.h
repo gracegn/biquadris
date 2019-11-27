@@ -3,23 +3,25 @@
 #include <string>
 #include "subject.h"
 #include "blockinfo.h"
+#include "board.h"
 using namespace std;
 
 class Cell;
 
-class Board: public Subject<blockInfo> {
+class Block: public Subject<blockInfo> {
   vector<Cell> parts;
+  Board* board;
   blockInfo info;
   
   int width, height;
   int remaining = 4;  // ctor will take a value for remaining ie 1
-  
+
+  void rotate(int i);
  public:
-  ~Board();
+  ~Block();
   
-  bool move(int player, string action); // k i have no idea what the params r supposed to be what's the int
-  void rotate(bool clockwise);
-  void drop();
+  void move(string action, int i = 0);
+  //void drop(); // handled in move function
   void decreaseCells();
 };
 
