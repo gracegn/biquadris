@@ -7,7 +7,7 @@ template <typename InfoType> class Observer;
 
 template <typename InfoType> class Subject {
   std::vector<Observer<InfoType>*> observers;
-  InfoType info;
+  virtual InfoType info = 0; //made it virtual to silence errors, idk if this was the right thing to do
  protected:
   void setInfo(InfoType newInfo);
  public:

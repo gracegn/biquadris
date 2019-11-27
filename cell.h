@@ -7,17 +7,17 @@ class Block;
 
 class Cell: public Subject<cellInfo> {
   int x, y;
-  bool isFilled; //??? or just enum
-  char type; // 
+  bool isFilled;
+  char type; 
 
   Block* owner;
   
  public:
-  ~Cell();
+  Cell(int x, int y, bool isFilled, char type, Block* owner);
+  void swap(Cell &other);
 
   cellInfo getInfo();
   void setType(char toType);
-  //void setXY(int newX, int newY); not convenient
   void addToX(int i);
   void addToY(int i);
   
