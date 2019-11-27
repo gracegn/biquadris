@@ -16,13 +16,12 @@ class Block: public Subject<blockInfo> {
   
   int width, height;
   int remaining = 4;  // ctor will take a value for remaining ie 1
-  
+
+  void rotate(int i);
  public:
-  
   Block(char type, int level, const vector<vector<Cell>> &gameBoard);
   
-  void move(string action, int i); // int is repetitions
-  void rotate(bool clockwise);
+  void move(string action, int i = 0); // int is repetitions
   void drop();
   void decreaseCells();
 };

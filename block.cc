@@ -5,7 +5,7 @@ using namespace std;
 // we chose to have the constructor interpret the type of block to create,
 // as having a class for each block type would clutter up the file system
 // while sharing the exact same methods for everything but the constructor.
-Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard){
+Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard) {
 
     // each cells' parts vector is a vector of cells the size of the
     // smallest rectangle that encompasses the whole block. For example,
@@ -139,30 +139,30 @@ void Block::move(string action, int repeats) {
             for (Cell cell : parts) {
                 cell.addToX(-1);
             }
-        }else if (action == "right") {
+        } else if (action == "right") {
 
-        for (int j = 0; j < parts.size(); ++j) {
-                cellInfo currInfo = parts.at(j).getInfo();
+            for (int j = 0; j < parts.size(); ++j) {
+                    cellInfo currInfo = parts.at(j).getInfo();
 
-                // cannot move right any further
-                if (currInfo.y == 10) {
-                    return;
-                }
-                else if (currInfo.isFilled) {
-                    // if the cell at position x,y is filled in our block object,
-                    // make sure it's not filled in the cell we want to move to.
-                    if (board.at(currInfo.x).at(currInfo.y + 1).getInfo().isFilled) {
+                    // cannot move right any further
+                    if (currInfo.y == 10) {
                         return;
                     }
-                }
-        }
-        ++info.llx;
-        for (Cell cell : parts) {
-            cell.addToX(1);
-        }
-    } else if (action == "down") {
+                    else if (currInfo.isFilled) {
+                        // if the cell at position x,y is filled in our block object,
+                        // make sure it's not filled in the cell we want to move to.
+                        if (board.at(currInfo.x).at(currInfo.y + 1).getInfo().isFilled) {
+                            return;
+                        }
+                    }
+            }
+            ++info.llx;
+            for (Cell cell : parts) {
+                cell.addToX(1);
+            }
+        } else if (action == "down") {
 
-        for (int j = 0; j < parts.size(); ++j) {
+            for (int j = 0; j < parts.size(); ++j) {
                 cellInfo currInfo = parts.at(j).getInfo();
 
                 // cannot move down any further
@@ -176,18 +176,42 @@ void Block::move(string action, int repeats) {
                         return;
                     }
                 }
+            }
+            ++info.lly;
+            for (Cell cell : parts) {
+                cell.addToY(-1);
+            }
+        } else if (action == "counterclockwise") {
+            i %= 4;
+            if (i != 4) rotate(4 - i);
+        } else if (action == "clockwise") {
+            i %= 4;
+            if (i != 4) rotate(i);
         }
-        ++info.lly;
+    }
+}
+
+void Block::rotate(int i) {
+    cellInfo cInfo;
+
+    for (int j = 0; j < i; ++j) {
+        // we pretend to do the thing to check if there are conflicts
         for (Cell cell : parts) {
-            cell.addToY(-1);
+            cInfo = cell.getInfo();
+            if (!board.at(cInfo.x + info.lly - cInfo.y).at(cInfo.y).getInfo().isFilled
+                || !board.at(cInfo.x).at(cInfo.y + cInfo.x - info.llx - 2).getInfo().isFilled) return;
         }
-    } else if (action == "counterclockwise") {
-        repeats %= 4;
-        if (i != 4) rotate(-i);
-    } else if (action == "clockwise") {
-        repeats %= 4;
-        if (i != 4) rotate(i);
+        
+        // we do the thing for real
+        for (Cell cell : parts) {
+            cInfo = cell.getInfo();
+
+            cell.addToX(info.lly - cInfo.y);
+            cell.addToY(cInfo.x - info.llx - 2);
+        }
+
+        int buf = width;
+        width = height;
+        height = buf;
     }
-    }
-    
 }

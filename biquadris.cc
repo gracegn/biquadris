@@ -35,11 +35,12 @@ void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
     gd->updateInfo(player1, player2);
 }
 
-bool Biquadris::move(int i, string action) { // uhh idk what this returns and i guessed what the params meant, ask ericsons n jenn
-    if (action == "drop" || action == "somefuturecommand") { // no clue what this means either lol how can it equal two things huh
-        
+void Biquadris::move(string action, int i) {
+    if (action == "drop") { // for "drop" actions, we want to end the player's turn afterwards
+        turn == 1 ? player1.move(action) : player2.move(action);
+        toggleTurn();
     } else {
-        turn == 1 ? player1.move(i, action) : player2.move(i, action);
+        turn == 1 ? player1.move(action, i) : player2.move(action, i);
     }
 }
 
@@ -83,3 +84,10 @@ void Biquadris::boardsPrint(bool blind1, bool blind2) {
     // next output
 }
 
+void Biquadris::toggleTurn() {
+    if (turn == 1) {
+        turn = 0;
+    } else {
+        turn = 1;
+    }
+}
