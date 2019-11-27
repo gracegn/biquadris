@@ -8,8 +8,7 @@ class Block;
 class Cell: public Subject<cellInfo> {
   int x, y;
   bool isFilled;
-  char type; 
-
+  char type;
   Block* owner;
   
  public:
