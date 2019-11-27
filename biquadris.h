@@ -23,7 +23,7 @@ class Biquadris {
   void newGame(int rows = 15, int cols = 11);
   void restartGame();
   void updateDisplays(playerInfo player1, playerInfo player2);
-  bool move(int player, string action); // uhh idk what this returns and i guessed what the params meant, ask ericsons n jenn
+  bool move(int i, string action); // uhh idk what this returns and i guessed what the params meant, ask ericsons n jenn
   void boardsPrint(bool blind1, bool blind2);
 };
 

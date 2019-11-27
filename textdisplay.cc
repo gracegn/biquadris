@@ -17,11 +17,6 @@ void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
 
 }
 
-// haha i just realised the print function for text has to be somewhere both boards can be accessed, so probably in like game or smth
-void TextDisplay::print(int player = 0) {
-
-}
-
 // this is a 'helper' for Biquadris::boardsPrint
 string TextDisplay::rowString(int player, int row, string blind = "") {
     string str = "";

@@ -36,7 +36,7 @@ void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
 }
 
 bool Biquadris::move(int i, string action) { // uhh idk what this returns and i guessed what the params meant, ask ericsons n jenn
-    if (action == "drop" && action == "somefuturecommand") { // no clue what this means either lol how can it equal two things huh
+    if (action == "drop" || action == "somefuturecommand") { // no clue what this means either lol how can it equal two things huh
         
     } else {
         turn == 1 ? player1.move(i, action) : player2.move(i, action);
