@@ -213,3 +213,10 @@ void Block::rotate(int i) {
         height = buf;
     }
 }
+
+int Block::decreaseCells() {
+    --remaining;
+    
+    if (remaining == 0) return info.levelCreated + 1;
+    return 0;
+}

@@ -23,7 +23,7 @@ class Block: public Subject<blockInfo> {
   
   void move(string action, int i = 0); // int is repetitions
   void drop();
-  void decreaseCells();
+  int decreaseCells();
 };
 
 #endif

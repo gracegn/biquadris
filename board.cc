@@ -99,10 +99,26 @@ bool Board::isRowFull(int rownum) {
     }
     return true;
 }
-void Board::clearRow(int rownum);
+
+void Board::clearRow(int rownum) { // SOMEHOW UPDATE HIGHSCORE
+    // remove row from cells vector
+    myBoard.erase(myBoard.begin() + rownum);
+    score += (level + 1) * (level + 1);
+    
+    // edit cell info - decrement each cell's coordinate
+    // call cell's owner block to decrease cells
+    for (int i = rownum; i < myBoard.size(); ++i) {
+        for (Cell cell : myBoard[i]) {
+            cell.addToX(-1);
+            score += cell.getOwner()->decreaseCells();
+        }
+    }
+}
 
 playerInfo Board::getInfo() {
     return {level, score, nextBlock};
 };
 
-void Board::notify(Subject<blockInfo> &whoNotified);
+void Board::notify(Subject<blockInfo> &whoNotified) {
+
+}

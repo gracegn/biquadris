@@ -6,6 +6,10 @@ cellInfo Cell::getInfo() {
     return cellInfo {x, y, isFilled, type};
 }
 
+Block* Cell::getOwner() {
+    return owner;
+}
+
 void Cell::setType(char toType) {
     type = toType;
 }
