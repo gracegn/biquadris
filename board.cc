@@ -14,7 +14,30 @@ void Board::levelChange(int newlevel) {
 }
 
 void Board::move(string action, int i = 0) {
-    currBlock->move(action, i);
+    if (action == "drop") {
+        //drop is special, since we actually make permanent changes to the board.
+        currBlock->move("down", 15);
+
+        // here we "lock" the block to the board.
+        vector<Cell> parts = currBlock->getParts();
+        for (auto cell: parts) {
+            cellInfo info = cell.getInfo();
+            if (info.isFilled) {
+                // assign our block's cell to this cell.
+                myBoard.at(info.x).at(info.y) = cell;
+            }
+        }
+
+        for int (i = 0; i < 18; ++i) {
+            if (isRowFull(i)) {
+                clearRow(i);
+            }
+        }
+        endTurn();
+    }
+    else {
+        currBlock->move(action, i);
+    }
 }
 
 vector<vector<Cell>>& Board::getBoard() {
@@ -25,7 +48,6 @@ vector<vector<Cell>>& Board::getBoard() {
 // creates new block from nextBlock and sets it to curr
 // and generates a new nextBlock
 void Board::endTurn() {
-    
     
     currBlock = new Block{nextBlock, level, myBoard};
     char nextBlock = generateNext(level);

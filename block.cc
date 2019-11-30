@@ -111,9 +111,11 @@ Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard) : info
     }
 }
 
+const vector<Cell> &Block::getParts() {
+    return parts;
+}
+
 void Block::move(string action, int repeats) {
-    // later on, if we want to have combinations of moves, 
-    // we would put this entire thing in a while loop
 
     // we repeat the move actions as many time as speicied by repeats
     for (int i = 0; i < repeats; ++i) {
@@ -212,4 +214,8 @@ void Block::rotate(int i) {
         width = height;
         height = buf;
     }
+}
+
+void Block::decreaseCells() {
+    --remaining;
 }
