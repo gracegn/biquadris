@@ -20,9 +20,9 @@ class Block: public Subject<blockInfo> {
   void rotate(int i);
  public:
   Block(char type, int level, const vector<vector<Cell>> &gameBoard);
+  const vector<Cell> &getParts();
   
   void move(string action, int i = 0); // int is repetitions
-  void drop();
   int decreaseCells();
 };
 
