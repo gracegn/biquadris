@@ -38,12 +38,16 @@ int main(int argc, char *argv[]) {
     }
 
     Biquadris game(start_level, seed, onlyText);
+    game.boardsPrint();
     // game.newGame(start_level, seed, onlyText);
     string input;
     int repeats = 1;
 
-    while (cin >> repeats >> input) {
-        vector<string> buffer = commands;
+    while (cin >> input) {
+        
+        stringstream sInput(input);
+
+        vector<string> buffer(commands);
         // int size = buffer.size();
         char read;
         int i = 0;
@@ -89,6 +93,7 @@ int main(int argc, char *argv[]) {
                 else if (c == "restart") {
                     game.restartGame();
                 }
+                game.boardsPrint();
             }
             else if (commands.size() == 0) {
                 // nothing matched, uh oh moment

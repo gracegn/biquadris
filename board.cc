@@ -164,7 +164,7 @@ int Board::clearRow(int rownum) {
 }
 
 playerInfo Board::getInfo() const {
-    return {level, score, nextBlock, gameOver};
+    return {level, score, nextBlock, gameOver, isBlind};
 };
 
 void Board::notify(Subject<blockInfo> &whoNotified) {

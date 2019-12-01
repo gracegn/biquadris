@@ -6,6 +6,7 @@ struct playerInfo {
   int score;  // current player score
   char nextType;  // type of next block
   bool gameOver;
+  bool isBlind;
 };
 
 #endif

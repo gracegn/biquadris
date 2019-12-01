@@ -30,7 +30,7 @@ class Biquadris {
   void move(string action, int repeats = 1);
   void levelChange(int change);
   void setCurrBlock(char newType);
-  void boardsPrint(bool blind1, bool blind2);
+  void boardsPrint();
 };
 
 #endif

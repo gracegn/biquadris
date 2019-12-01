@@ -64,7 +64,10 @@ void Biquadris::levelChange(int change) {
 // prints the textdisplays of both players side by side
 // blind(i) refers to if player(i) is blind
 // blind: columns 3-9 and rows 3-12
-void Biquadris::boardsPrint(bool blind1, bool blind2) {
+void Biquadris::boardsPrint() {
+    bool blind1 = player1.getInfo().isBlind;
+    bool blind2 = player2.getInfo().isBlind;
+
     string space = "\t\t\t";
     string sep = "-----------";
     cout << "Level:    " << player1.getInfo().level << space << "Level:    " << player2.getInfo().level << endl;
