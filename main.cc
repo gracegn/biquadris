@@ -41,17 +41,17 @@ int main(int argc, char *argv[]) {
     game.boardsPrint();
     // game.newGame(start_level, seed, onlyText);
     string input;
-    int repeats = 1;
+    int repeats;
 
     while (cin >> input) {
-        
-        stringstream sInput(input);
+        stringstream sInput((string) 0 + input);
+        sInput >> repeats;
+        if (repeats == 0) repeats = 1;
 
-        vector<string> buffer(commands);
+        vector<string> buffer = commands;
         // int size = buffer.size();
         char read;
         int i = 0;
-        stringstream sInput(input);
 
         while (sInput >> read) {
             int delIndex = 0;
