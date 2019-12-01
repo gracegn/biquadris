@@ -7,7 +7,7 @@ Biquadris::~Biquadris() {
 }
   
 //   bool Biquadris::isGameOver() const;
-void Biquadris::newGame(int rows = 15, int cols = 11) {
+void Biquadris::newGame(int rows, int cols) {
     boardHeight = rows;
     boardWidth = cols;
     td = new TextDisplay{rows, cols};

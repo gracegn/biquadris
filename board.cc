@@ -7,13 +7,13 @@
 #include "cell.h"
 using namespace std;
 
-Board::Board(int level = 0) : level{level} {}
+Board::Board(int level) : level{level} {}
 
 void Board::levelChange(int newlevel) {
     level = newlevel;
 }
 
-void Board::move(string action, int i = 0) {
+void Board::move(string action, int i) {
     if (action == "drop") {
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);
@@ -135,6 +135,10 @@ void Board::clearRow(int rownum) { // SOMEHOW UPDATE HIGHSCORE
             score += cell.getOwner()->decreaseCells();
         }
     }
+}
+
+char Board::generateNext(int level) {
+
 }
 
 playerInfo Board::getInfo() {

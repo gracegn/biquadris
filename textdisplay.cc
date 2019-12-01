@@ -18,7 +18,7 @@ void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
 }
 
 // this is a 'helper' for Biquadris::boardsPrint
-string TextDisplay::rowString(int player, int row, string blind = "") {
+string TextDisplay::rowString(int player, int row, string blind) {
     string str = "";
 
     if (blind == "col") {

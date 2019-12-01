@@ -70,7 +70,7 @@ int main(){
         }
 
         if (game.isGameOver()) {
-            return;
+            return 0;
         }
         repeats = 1;
     }

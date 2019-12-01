@@ -13,7 +13,7 @@ class TextDisplay: public AbsDisplay {
 
   void notify(Subject<cellInfo> &whoNotified) override;
   void print(int player = 0);  // player = the one we add blind to, 0 means neither
-  string TextDisplay::rowString(int player, int row, string blind = "");
+  std::string rowString(int player, int row, std::string blind = "");
 };
 
 #endif

@@ -222,3 +222,7 @@ int Block::decreaseCells() {
     if (remaining == 0) return info.levelCreated + 1;
     return 0;
 }
+
+blockInfo Block::getInfo() const {
+    return info;
+}
