@@ -17,7 +17,7 @@ void Board::levelChange(int change) {
     if (level < 0) level = 0;
 }
 
-void Board::move(string action, int i = 0) {
+void Board::move(string action, int i) {
     if (action == "drop") {
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);
@@ -147,6 +147,10 @@ int Board::clearRow(int rownum) {
             return cell.getOwner()->decreaseCells();
         }
     }
+}
+
+char Board::generateNext(int level) {
+
 }
 
 playerInfo Board::getInfo() {

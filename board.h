@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include <string>
+#include "cell.h"
 #include "observer.h"
 #include "blockinfo.h"
 #include "playerinfo.h"
@@ -8,7 +9,6 @@
 #include "gdisplay.h"
 using namespace std;
 
-class Cell;
 class Block;
 // class InvalidMove{};
 
@@ -44,6 +44,7 @@ class Board: public Observer<blockInfo> {
   bool isRowFull(int rownum);
   int clearRow(int rownum);
 
+  char generateNext(int level);
   vector<vector<Cell>> &getBoard();
   
   playerInfo getInfo();

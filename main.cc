@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (game.isGameOver()) {
-            return;
+            return 0;
         }
         repeats = 1;
     }

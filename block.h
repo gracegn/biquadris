@@ -7,7 +7,7 @@
 #include "board.h"
 #include "cell.h"
 
-// class Cell;
+class Cell;
 
 class Block: public Subject<blockInfo> {
   std::vector<Cell> parts;
@@ -21,6 +21,7 @@ class Block: public Subject<blockInfo> {
  public:
   Block(char type, int level, const std::vector<vector<Cell>> &gameBoard);
   const std::vector<Cell> &getParts();
+  blockInfo getInfo() const override;
   
   void move(string action, int i = 0); // int is repetitions
   int decreaseCells();

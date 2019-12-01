@@ -2,6 +2,7 @@
 #define CELL_H
 #include "subject.h"
 #include "cellinfo.h"
+#include "block.h"
 
 class Block;
 
@@ -14,7 +15,7 @@ class Cell: public Subject<cellInfo> {
  public:
   Cell(int x, int y, bool isFilled, char type, Block* owner);
 
-  cellInfo getInfo();
+  cellInfo getInfo() const override;
   Block* getOwner();
   void setType(char toType);
   void addToX(int i);
