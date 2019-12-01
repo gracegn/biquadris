@@ -13,6 +13,7 @@ template <typename InfoType> class Subject {
   void attach(Observer<InfoType> *o);  
   void notifyObservers();
   virtual InfoType getInfo() const = 0;
+  virtual ~Subject() = default;
 };
 
 template <typename InfoType>
@@ -30,5 +31,6 @@ void Subject<InfoType>::notifyObservers() {
 
 // template <typename InfoType>
 // InfoType Subject<InfoType>::getInfo() const { return info; }
+
 
 #endif

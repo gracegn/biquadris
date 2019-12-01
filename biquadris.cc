@@ -7,13 +7,13 @@ Biquadris::~Biquadris() {
 }
   
 //   bool Biquadris::isGameOver() const;
-void Biquadris::newGame(int start_level, int newseed, bool onlyText, int rows = 15, int cols = 11) {
+void Biquadris::newGame(int start_level, int newseed, bool onlyText, int rows, int cols) {
     boardHeight = rows;
     boardWidth = cols;
-    textOnly = textOnly;
+    textOnly = onlyText;
     seed = newseed;
     td = new TextDisplay{rows, cols};
-    if (!textOnly) gd = new GraphicsDisplay{rows, cols};
+    if (!textOnly) gd = new GraphicsDisplay{{start_level, 0, 'E'}, {start_level, 0, 'E'}, rows, cols};
     
     player1 = Board(seed, start_level);
     player2 = Board(seed, start_level);
@@ -24,7 +24,7 @@ void Biquadris::restartGame() {
     td = new TextDisplay{boardHeight, boardWidth};
     if (!textOnly) {
         delete gd;
-        gd = new GraphicsDisplay{boardHeight, boardWidth};
+        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
     }
 
     player1 = Board(seed, player1.getInfo().level);
@@ -34,7 +34,7 @@ void Biquadris::restartGame() {
 
 // when level, score, or 'next' gets updated aka after every turn?
 void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
-    td->updateInfo(player1, player2);
+    // td->updateInfo(player1, player2); idk if this is even necessary anymore bc text is updated here
     if (!textOnly) gd->updateInfo(player1, player2);
 }
 

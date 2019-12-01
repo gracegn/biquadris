@@ -4,7 +4,6 @@
 #include "board.h"
 #include "textdisplay.h"
 #include "gdisplay.h"
-using namespace std;
 
 class Biquadris {
   Board player1;
@@ -21,7 +20,7 @@ class Biquadris {
   void toggleTurn();
 
  public:
-  // Biquadris() should we just make newGame the constructor of biquadris
+  Biquadris(); //  we just make newGame the constructor of biquadris
   ~Biquadris();
   
   bool isGameOver() const;

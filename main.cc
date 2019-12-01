@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
     while (cin >> repeats >> input) {
         vector<string> buffer = commands;
-        int size = buffer.size();
+        // int size = buffer.size();
         char read;
         int i = 0;
         stringstream sInput(input);

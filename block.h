@@ -19,11 +19,13 @@ class Block: public Subject<blockInfo> {
 
   void rotate(int i);
  public:
-  Block(char type, int level, const std::vector<vector<Cell>> &gameBoard);
+  ~Block();
+  
+  Block(char type, int level, const std::vector<std::vector<Cell>> &gameBoard);
   const std::vector<Cell> &getParts();
   blockInfo getInfo() const override;
   
-  void move(string action, int i = 0); // int is repetitions
+  void move(std::string action, int i = 0); // int is repetitions
   int decreaseCells();
 };
 

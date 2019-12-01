@@ -226,3 +226,6 @@ int Block::decreaseCells() {
 blockInfo Block::getInfo() const {
     return info;
 }
+
+
+

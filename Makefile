@@ -5,7 +5,7 @@ OBJECTS = main.o cell.o biquadris.o board.o block.o absdisplay.o textdisplay.o g
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}
-	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11 -L/opt/X11/lib -I/opt/X11/include
 
 -include ${DEPENDS}
 

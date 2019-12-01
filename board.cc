@@ -8,8 +8,9 @@
 #include "cell.h"
 using namespace std;
 
-Board::Board(int seed, int level = 0) : level{level} {
+Board::Board(int seed, int level) : level{level} {
     srand(seed); // i have no idea where this is supposed to go, hopefully here lol
+    endTurn(); // to set up the first blocks
 }
 
 void Board::levelChange(int change) {
@@ -58,7 +59,8 @@ vector<vector<Cell>>& Board::getBoard() {
 // don't have to return score as biquadris accesses & checks through getInfo()
 void Board::endTurn() {
     currBlock = new Block{nextBlock, level, myBoard};
-    char nextBlock = generateNext(level);
+    nextBlock = generateNext(level);
+    // notify displays and observers
 }
 
 char generateNext(int level) {
@@ -95,6 +97,7 @@ char generateNext(int level) {
         if (type == 7) return 'I';
         if (type == 8) return 'O';
     }
+    return '0';
 }
 
 
@@ -147,10 +150,7 @@ int Board::clearRow(int rownum) {
             return cell.getOwner()->decreaseCells();
         }
     }
-}
-
-char Board::generateNext(int level) {
-
+    return 0;
 }
 
 playerInfo Board::getInfo() {
