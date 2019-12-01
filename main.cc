@@ -5,14 +5,40 @@
 #include "biquadris.h"
 using namespace std;
 
-int main(){
-    vector<string> commands = 
-        {"left", "right", "down", "clockwise", "counterclockwise",
+int main(int argc, char *argv[]) {
+    vector<string> commands = {
+        "left", "right", "down", "clockwise", "counterclockwise",
         "drop", "levelup", "leveldown", "norandom", "random", "sequence",
-        "I", "J", "L" , "T", "S", "O", "Z", "restart"};
+        "I", "J", "L" , "T", "S", "O", "Z", "restart"
+    };
     
+    bool onlyText = false;
+    int start_level = 0;
+    int seed = 727;
+    string scriptfile1 = "sequence1.txt";
+    string scriptfile2 = "sequence2.txt";
+
+    for (int i = 1; i < argc; ++i) {
+        string arg(argv[i]);
+        if (arg == "-text") {
+            onlyText = true;
+        }
+        else if (arg == "-seed") {
+            stringstream(argv[++i]) >> seed;
+        }
+        else if (arg == "-scriptfile1") {
+            scriptfile1 = string(argv[++i]);
+        }
+        else if (arg == "-scriptfile2") {
+            scriptfile2 = string(argv[++i]);
+        }
+        else if (arg == "-startlevel") {
+            stringstream(argv[++i]) >> start_level;
+        }
+    }
+
     Biquadris game;
-    game.newGame();
+    game.newGame(start_level, seed, onlyText);
     string input;
     int repeats = 1;
 
@@ -42,13 +68,13 @@ int main(){
                 }
                 else if (c == "I" || c == "J" || c == "L" 
                 || c == "T" || c == "S" || c == "Z" || c == "O") {
-                    // NOT IMPLEMENTED YET I THINK
+                    game.setCurrBlock(c.at(0));
                 }
                 else if (c == "levelup") {
-                    // NOT IMPLEMENTED YET I THINK
+                    game.levelChange(1);
                 }
                 else if (c == "leveldown") {
-                    // NOT IMPLEMENTED YET I THINK
+                    game.levelChange(-1);
                 }
                 else if (c == "norandom") {
                     // NOT IMPLEMENTED YET I THINK
@@ -57,7 +83,8 @@ int main(){
                     // NOT IMPLEMENTED YET I THINK
                 }
                 else if (c == "sequence") {
-                    // NOT IMPLEMENTED YET I THINK
+                    cin >> input; // reads file name
+                    // how do we read file
                 }
                 else if (c == "restart") {
                     game.restartGame();

@@ -7,33 +7,42 @@ Biquadris::~Biquadris() {
 }
   
 //   bool Biquadris::isGameOver() const;
-void Biquadris::newGame(int rows = 15, int cols = 11) {
+void Biquadris::newGame(int start_level, int newseed, bool onlyText, int rows = 15, int cols = 11) {
     boardHeight = rows;
     boardWidth = cols;
+    textOnly = textOnly;
+    seed = newseed;
     td = new TextDisplay{rows, cols};
-    gd = new GraphicsDisplay{rows, cols};
+    if (!textOnly) gd = new GraphicsDisplay{rows, cols};
     
-    player1 = Board(); // level param
-    player2 = Board();
+    player1 = Board(seed, start_level);
+    player2 = Board(seed, start_level);
 }
 
 void Biquadris::restartGame() {
     delete td;
     td = new TextDisplay{boardHeight, boardWidth};
-    delete gd;
-    gd = new GraphicsDisplay{boardHeight, boardWidth};
+    if (!textOnly) {
+        delete gd;
+        gd = new GraphicsDisplay{boardHeight, boardWidth};
+    }
 
-    player1 = Board();
-    player2 = Board();
+    player1 = Board(seed, player1.getInfo().level);
+    player2 = Board(seed, player2.getInfo().level);
     turn = 1;
-    // editing the highscore should be in the function that updates score
 }
 
 // when level, score, or 'next' gets updated aka after every turn?
 void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
     td->updateInfo(player1, player2);
-    gd->updateInfo(player1, player2);
+    if (!textOnly) gd->updateInfo(player1, player2);
 }
+
+void Biquadris::setCurrBlock(char newType) {
+    if (turn == 1) player1.setCurrBlock(newType);
+    if (turn == 2) player2.setCurrBlock(newType);
+} 
+
 
 void Biquadris::move(string action, int i) {
     if (action == "drop") { // for "drop" actions, we want to end the player's turn afterwards
@@ -48,6 +57,11 @@ void Biquadris::move(string action, int i) {
     } else {
         turn == 1 ? player1.move(action, i) : player2.move(action, i);
     }
+}
+
+void Biquadris::levelChange(int change) {
+    if (turn == 1) player1.levelChange(change);
+    if (turn == 2) player2.levelChange(change);
 }
 
 // prints the textdisplays of both players side by side

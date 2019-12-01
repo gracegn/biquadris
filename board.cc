@@ -1,5 +1,6 @@
 #include <string>
 #include <cstdlib>
+#include <cmath> // for squaring, are we allowed??
 #include "board.h"
 #include "block.h"
 #include "textdisplay.h"
@@ -7,10 +8,13 @@
 #include "cell.h"
 using namespace std;
 
-Board::Board(int level = 0) : level{level} {}
+Board::Board(int seed, int level = 0) : level{level} {
+    srand(seed); // i have no idea where this is supposed to go, hopefully here lol
+}
 
-void Board::levelChange(int newlevel) {
-    level = newlevel;
+void Board::levelChange(int change) {
+    level += change;
+    if (level < 0) level = 0;
 }
 
 void Board::move(string action, int i = 0) {
@@ -28,11 +32,15 @@ void Board::move(string action, int i = 0) {
             }
         }
 
+        int numRowsCleared = 0;
+        int blocksErasedScore = 0;
         for (int i = 0; i < 18; ++i) {
             if (isRowFull(i)) {
-                clearRow(i);
+                blocksErasedScore += clearRow(i);
+                ++numRowsCleared;
             }
         }
+        score += pow(level + numRowsCleared, 2) + blocksErasedScore; // highscore is updated in biquadris
         endTurn();
     }
     else {
@@ -47,8 +55,8 @@ vector<vector<Cell>>& Board::getBoard() {
 // takes currBlock and perma-adds it to the board & displays
 // creates new block from nextBlock and sets it to curr
 // and generates a new nextBlock
+// don't have to return score as biquadris accesses & checks through getInfo()
 void Board::endTurn() {
-    
     currBlock = new Block{nextBlock, level, myBoard};
     char nextBlock = generateNext(level);
 }
@@ -94,11 +102,11 @@ void Board::specialAction() {
     cout << "What special action (blind, heavy, force) would you like to select?" << endl;
     string s;
     cin >> s;
-    if (s == "blind" || s == "Blind" || s == "BLIND")
+    if (s == "blind" || s == "Blind" || s == "BLIND" || s == "b" || s == "B")
         oppBoard->toggleBlind();
-    else if (s == "heavy" || s == "Heavy" || s == "HEAVY")
+    else if (s == "heavy" || s == "Heavy" || s == "HEAVY" || s == "h" || s == "H")
         oppBoard->setHeavy();
-    else if (s == "force" || s == "Force" || s == "FORCE") {
+    else if (s == "force" || s == "Force" || s == "FORCE" || s == "f" || s == "F") {
         char c;
         cin >> c;
         oppBoard->setNextBlock(c);
@@ -113,6 +121,10 @@ void Board::setHeavy() {
 void Board::setNextBlock(char newtype) {
     nextBlock = newtype;
 }
+void Board::setCurrBlock(char newtype) {
+    delete currBlock;
+    currBlock = new Block{newtype, level, myBoard};
+}
 
 bool Board::isRowFull(int rownum) {
     for (int i = 0; i < myBoard.at(0).size(); ++i) {
@@ -122,17 +134,17 @@ bool Board::isRowFull(int rownum) {
     return true;
 }
 
-void Board::clearRow(int rownum) { // SOMEHOW UPDATE HIGHSCORE
+// returns score of any blocks erased
+int Board::clearRow(int rownum) {
     // remove row from cells vector
     myBoard.erase(myBoard.begin() + rownum);
-    score += (level + 1) * (level + 1);
     
     // edit cell info - decrement each cell's coordinate
     // call cell's owner block to decrease cells
     for (int i = rownum; i < myBoard.size(); ++i) {
         for (Cell cell : myBoard[i]) {
-            cell.addToX(-1);
-            score += cell.getOwner()->decreaseCells();
+            cell.addToX(-1);                        // does account for cells in row 0?
+            return cell.getOwner()->decreaseCells();
         }
     }
 }

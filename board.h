@@ -16,6 +16,7 @@ class Board: public Observer<blockInfo> {
   vector<vector<Cell>> myBoard;
   Board* oppBoard;
   int score = 0;
+  // int seed;
   int level;
 
   Block* currBlock;
@@ -27,8 +28,8 @@ class Board: public Observer<blockInfo> {
  public:
   ~Board();
   
-  Board(int level = 0);
-  void levelChange(int newlevel);
+  Board(int seed, int level = 0);
+  void levelChange(int change);
   void move(string action, int i = 0);
 
   void endTurn();
@@ -38,9 +39,10 @@ class Board: public Observer<blockInfo> {
   void toggleBlind();
   void setHeavy();
   void setNextBlock(char newtype);
+  void setCurrBlock(char newtype);
 
   bool isRowFull(int rownum);
-  void clearRow(int rownum);
+  int clearRow(int rownum);
 
   vector<vector<Cell>> &getBoard();
   
