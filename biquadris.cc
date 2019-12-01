@@ -6,17 +6,14 @@ Biquadris::~Biquadris() {
     delete gd;
 }
   
-//   bool Biquadris::isGameOver() const;
-void Biquadris::newGame(int start_level, int newseed, bool onlyText, int rows, int cols) {
+Biquadris::Biquadris(int start_level, int newseed, bool onlyText, int rows, int cols) : player1{Board(newseed, start_level)}, player2{Board(newseed, start_level)} {
     boardHeight = rows;
     boardWidth = cols;
     textOnly = onlyText;
     seed = newseed;
+
     td = new TextDisplay{rows, cols};
     if (!textOnly) gd = new GraphicsDisplay{{start_level, 0, 'E'}, {start_level, 0, 'E'}, rows, cols};
-    
-    player1 = Board(seed, start_level);
-    player2 = Board(seed, start_level);
 }
 
 void Biquadris::restartGame() {
@@ -102,6 +99,10 @@ void Biquadris::boardsPrint(bool blind1, bool blind2) {
     cout << sep << space << sep << endl;
     cout << "Next:      " << space << "Next:      " << endl;
     // next output
+}
+
+bool Biquadris::isGameOver() const {
+    return (player1.getInfo().gameOver || player2.getInfo().gameOver);
 }
 
 void Biquadris::toggleTurn() {

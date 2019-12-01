@@ -117,6 +117,16 @@ const vector<Cell> &Block::getParts() {
     return parts;
 }
 
+bool Block::checkOverlap() {
+    // for each filled Cell in parts, we check if the cell in Board is taken
+    for (Cell cell : parts) {
+        if (cell.getInfo().isFilled && board[cell.getInfo().x][cell.getInfo().y].getInfo().isFilled) return true;
+    }
+
+    return false;
+}
+
+
 void Block::move(string action, int repeats) {
 
     // we repeat the move actions as many time as speicied by repeats

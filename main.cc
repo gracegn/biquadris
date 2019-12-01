@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    Biquadris game;
-    game.newGame(start_level, seed, onlyText);
+    Biquadris game(start_level, seed, onlyText);
+    // game.newGame(start_level, seed, onlyText);
     string input;
     int repeats = 1;
 

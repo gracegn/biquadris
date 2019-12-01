@@ -24,6 +24,7 @@ class Board: public Observer<blockInfo> {
 
   bool isHeavy; // from opponent's special action
   bool isBlind;
+  bool gameOver = false;
 
  public:
   ~Board();
@@ -41,13 +42,13 @@ class Board: public Observer<blockInfo> {
   void setNextBlock(char newtype);
   void setCurrBlock(char newtype);
 
-  bool isRowFull(int rownum);
+  bool isRowFull(int rownum) const;
   int clearRow(int rownum);
 
   char generateNext(int level);
   vector<vector<Cell>> &getBoard();
   
-  playerInfo getInfo();
+  playerInfo getInfo() const;
 
   void notify(Subject<blockInfo> &whoNotified) override;
 };

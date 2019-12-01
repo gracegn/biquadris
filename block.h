@@ -24,6 +24,7 @@ class Block: public Subject<blockInfo> {
   
   const std::vector<Cell> &getParts();
   blockInfo getInfo() const override;
+  bool checkOverlap();
   
   void move(std::string action, int i = 0); // int is repetitions
   int decreaseCells();

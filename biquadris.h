@@ -20,11 +20,11 @@ class Biquadris {
   void toggleTurn();
 
  public:
-  Biquadris(); //  we just make newGame the constructor of biquadris
+  Biquadris(int start_level, int newseed, bool textOnly, int rows = 15, int cols = 11); //  we just make newGame the constructor of biquadris
   ~Biquadris();
   
   bool isGameOver() const;
-  void newGame(int start_level, int newseed, bool textOnly, int rows = 15, int cols = 11);
+  // void newGame(int start_level, int newseed, bool textOnly, int rows = 15, int cols = 11);
   void restartGame();
   void updateDisplays(playerInfo player1, playerInfo player2);
   void move(string action, int repeats = 1);

@@ -63,6 +63,9 @@ vector<vector<Cell>>& Board::getBoard() {
 // don't have to return score as biquadris accesses & checks through getInfo()
 void Board::endTurn() {
     currBlock = new Block{nextBlock, level, myBoard};
+    if (currBlock->checkOverlap()) {
+        gameOver = true;
+    }
     nextBlock = generateNext(level);
     // notify displays and observers
 }
@@ -133,7 +136,7 @@ void Board::setCurrBlock(char newtype) {
     currBlock = new Block{newtype, level, myBoard};
 }
 
-bool Board::isRowFull(int rownum) {
+bool Board::isRowFull(int rownum) const {
     for (int i = 0; i < myBoard.at(0).size(); ++i) {
         if (!myBoard.at(rownum).at(i).getInfo().isFilled)
             return false;
@@ -160,8 +163,8 @@ int Board::clearRow(int rownum) {
     return blockScore;
 }
 
-playerInfo Board::getInfo() {
-    return {level, score, nextBlock};
+playerInfo Board::getInfo() const {
+    return {level, score, nextBlock, gameOver};
 };
 
 void Board::notify(Subject<blockInfo> &whoNotified) {
