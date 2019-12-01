@@ -6,6 +6,10 @@ GraphicsDisplay::GraphicsDisplay(playerInfo info1, playerInfo info2, int rows, i
     theGDisplay.fillRectangle(0, 0, 500, 500, Xwindow::White);
 }
 
+void GraphicsDisplay::notify(Subject<cellInfo> &whoNotified) {
+
+}
+
 void GraphicsDisplay::updateInfo(playerInfo player1, playerInfo player2) {
     info1 = player1;
     info2 = player2;

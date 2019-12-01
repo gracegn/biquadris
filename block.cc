@@ -111,6 +111,8 @@ Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard) : info
     }
 }
 
+Block::~Block() { }
+
 const vector<Cell> &Block::getParts() {
     return parts;
 }
@@ -226,6 +228,3 @@ int Block::decreaseCells() {
 blockInfo Block::getInfo() const {
     return info;
 }
-
-
-

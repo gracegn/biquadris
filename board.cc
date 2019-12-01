@@ -13,6 +13,10 @@ Board::Board(int seed, int level) : level{level} {
     endTurn(); // to set up the first blocks
 }
 
+Board::~Board() {
+    delete currBlock;
+}
+
 void Board::levelChange(int change) {
     level += change;
     if (level < 0) level = 0;
@@ -63,7 +67,7 @@ void Board::endTurn() {
     // notify displays and observers
 }
 
-char generateNext(int level) {
+char Board::generateNext(int level) {
     if (level == 0) {
         //read in from txt file
     }
@@ -152,7 +156,7 @@ int Board::clearRow(int rownum) {
             blockScore += cell.getOwner()->decreaseCells();
         }
     }
-    
+
     return blockScore;
 }
 
