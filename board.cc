@@ -141,16 +141,19 @@ bool Board::isRowFull(int rownum) {
 int Board::clearRow(int rownum) {
     // remove row from cells vector
     myBoard.erase(myBoard.begin() + rownum);
+
+    int blockScore = 0;
     
     // edit cell info - decrement each cell's coordinate
     // call cell's owner block to decrease cells
     for (int i = rownum; i < myBoard.size(); ++i) {
         for (Cell cell : myBoard[i]) {
-            cell.addToX(-1);                        // does account for cells in row 0?
-            return cell.getOwner()->decreaseCells();
+            cell.addToX(-1);
+            blockScore += cell.getOwner()->decreaseCells();
         }
     }
-    return 0;
+    
+    return blockScore;
 }
 
 playerInfo Board::getInfo() {
