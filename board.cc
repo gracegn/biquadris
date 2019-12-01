@@ -20,7 +20,7 @@ void Board::move(string action, int i = 0) {
 
         // here we "lock" the block to the board.
         vector<Cell> parts = currBlock->getParts();
-        for (auto cell: parts) {
+        for (auto cell : parts) {
             cellInfo info = cell.getInfo();
             if (info.isFilled) {
                 // assign our block's cell to this cell.

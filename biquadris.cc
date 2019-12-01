@@ -37,7 +37,13 @@ void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
 
 void Biquadris::move(string action, int i) {
     if (action == "drop") { // for "drop" actions, we want to end the player's turn afterwards
-        turn == 1 ? player1.move(action) : player2.move(action);
+        if (turn == 1) {
+            player1.move(action);
+            if (highscore < player1.getInfo().score) highscore = player1.getInfo().score;
+        } else {
+            player2.move(action);
+            if (highscore < player2.getInfo().score) highscore = player2.getInfo().score;
+        }
         toggleTurn();
     } else {
         turn == 1 ? player1.move(action, i) : player2.move(action, i);
