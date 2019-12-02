@@ -9,7 +9,7 @@
 #include "cell.h"
 using namespace std;
 
-Board::Board(int seed, int level, string scriptFile) : level{level} {
+Board::Board(int seed, int level, int player, string scriptFile) : level{level} {
     srand(seed); // i have no idea where this is supposed to go, hopefully here lol
     if (scriptFile != "") sequenceFile = scriptFile;
 
@@ -20,6 +20,17 @@ Board::Board(int seed, int level, string scriptFile) : level{level} {
         while (sequence >> block) {
             blockOrder.emplace_back(block);
         }
+    }
+
+    nextBlock = blockOrder.at(0);
+    blockOrder.erase(blockOrder.begin());
+
+    for (int i = 0; i < height; ++i) {
+        vector<Cell> tempvec;
+        for (int j = 0; j < width; ++j) {
+            tempvec.emplace_back(Cell{i, j, false, 'E', nullptr, player});
+        }
+        myBoard.emplace_back(tempvec);
     }
 
     endTurn(); // to set up the first blocks
@@ -75,10 +86,11 @@ vector<vector<Cell>>& Board::getBoard() {
 // and generates a new nextBlock
 // don't have to return score as biquadris accesses & checks through getInfo()
 void Board::endTurn() {
-    currBlock = new Block{nextBlock, level, myBoard};
+    currBlock = new Block{nextBlock, level, player, myBoard};
     if (currBlock->checkOverlap()) {
         gameOver = true;
     }
+
     nextBlock = generateNext(level);
     // notify displays and observers
 }
@@ -158,7 +170,7 @@ void Board::setNextBlock(char newtype) {
 }
 void Board::setCurrBlock(char newtype) {
     delete currBlock;
-    currBlock = new Block{newtype, level, myBoard};
+    currBlock = new Block{newtype, level, player, myBoard};
 }
 
 bool Board::isRowFull(int rownum) const {

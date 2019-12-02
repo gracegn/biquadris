@@ -2,6 +2,7 @@
 #define BLOCK_H
 #include <string>
 #include <vector>
+#include <map>
 #include "subject.h"
 #include "blockinfo.h"
 #include "board.h"
@@ -12,7 +13,10 @@ class Cell;
 class Block: public Subject<blockInfo> {
   std::vector<Cell> parts;
   blockInfo info;
+
   std::vector<std::vector<Cell>> board;
+
+  static std::map<char, std::vector<std::vector<bool>>> blockSettings;
   
   int width, height;
   int remaining = 4;  // ctor will take a value for remaining ie 1
@@ -20,7 +24,7 @@ class Block: public Subject<blockInfo> {
   void rotate(int i);
  public:
   ~Block();
-  Block(char type, int level, const std::vector<std::vector<Cell>> &gameBoard);
+  Block(char type, int level, int turn, const std::vector<std::vector<Cell>> &gameBoard);
   
   const std::vector<Cell> &getParts();
   blockInfo getInfo() const override;

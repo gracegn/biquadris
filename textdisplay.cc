@@ -14,7 +14,12 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
 }
 
 void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
-
+    cellInfo info = whoNotified.getInfo();
+    if (info.isFilled) {
+        display1[info.x][info.y] = info.type;
+    } else {
+        display1[info.x][info.y] = ' ';
+    }
 }
 
 // this is a 'helper' for Biquadris::boardsPrint

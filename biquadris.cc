@@ -6,7 +6,7 @@ Biquadris::~Biquadris() {
     delete gd;
 }
   
-Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols) : player1{Board(newseed, start_level, scriptfile1)}, player2{Board(newseed, start_level, scriptfile2)} {
+Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols) : player1{Board(newseed, start_level, 1, scriptfile1)}, player2{Board(newseed, start_level, 2, scriptfile2)} {
     boardHeight = rows;
     boardWidth = cols;
     textOnly = onlyText;
@@ -24,8 +24,8 @@ void Biquadris::restartGame() {
         gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
     }
 
-    player1 = Board(seed, player1.getInfo().level);
-    player2 = Board(seed, player2.getInfo().level);
+    player1 = Board(seed, player1.getInfo().level, 1);
+    player2 = Board(seed, player2.getInfo().level, 2);
     turn = 1;
 }
 

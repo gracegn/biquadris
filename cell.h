@@ -11,9 +11,10 @@ class Cell: public Subject<cellInfo> {
   bool isFilled;
   char type;
   Block* owner;
+  int player;
   
  public:
-  Cell(int x, int y, bool isFilled, char type, Block* owner);
+  Cell(int x, int y, bool isFilled, char type, Block* owner, int player);
 
   cellInfo getInfo() const override;
   Block* getOwner();
