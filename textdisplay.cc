@@ -35,7 +35,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
                 if (player == 1) {
                     for (auto part: blockParts) {
                         cellInfo info = part.getInfo();
-                        if (info.isFilled()) {
+                        if (info.isFilled) {
                             if (info.x == row && info.y == i) {
                                 str += info.type;
                                 continue;
@@ -47,7 +47,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
                 else {
                     for (auto part: blockParts) {
                         cellInfo info = part.getInfo();
-                        if (info.isFilled()) {
+                        if (info.isFilled) {
                             if (info.x == row && info.y == i) {
                                 str += info.type;
                                 continue;
@@ -70,7 +70,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
             if (player == 1) {
                 for (auto part: blockParts) {
                     cellInfo info = part.getInfo();
-                    if (info.isFilled()) {
+                    if (info.isFilled) {
                         if (info.x == row && info.y == i) {
                             str += info.type;
                             continue;
@@ -82,7 +82,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
             else {
                 for (auto part: blockParts) {
                     cellInfo info = part.getInfo();
-                    if (info.isFilled()) {
+                    if (info.isFilled) {
                         if (info.x == row && info.y == i) {
                             str += info.type;
                             continue;
