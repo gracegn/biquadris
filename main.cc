@@ -39,32 +39,35 @@ int main(int argc, char *argv[]) {
 
     Biquadris game(start_level, seed, onlyText);
     game.boardsPrint();
-    // game.newGame(start_level, seed, onlyText);
     string input;
     int repeats;
 
     while (cin >> input) {
-        stringstream sInput((string) 0 + input);
+        stringstream sInput;
+        sInput << "0" << input;
         sInput >> repeats;
         if (repeats == 0) repeats = 1;
 
-        vector<string> buffer = commands;
-        // int size = buffer.size();
+        vector<string> buffer(commands);
         char read;
         int i = 0;
 
         while (sInput >> read) {
-            int delIndex = 0;
-            for (string com : commands) {
-                if (read != com[i]) {
-                    buffer.erase(buffer.begin() + delIndex);
-                }
-                else {
-                    ++delIndex;
+
+            for (int index = 0; index < buffer.size(); ++index) {
+                // cout << buffer[index] << "[0] = " << buffer[index][i] << endl;
+                if (read != buffer[index][i]) {
+                    buffer.erase(buffer.begin() + index);
+                    --index;
                 }
             }
-            if (commands.size() == 1) {
-                string c = commands[0];
+
+            for (string com : buffer)
+                    cout << com << " ";
+                cout << endl << endl;
+
+            if (buffer.size() == 1) {
+                string c = buffer[0];
                 // case town
                 if (c == "left" || c == "down" || c == "right" 
                 || c == "drop" || c == "clockwise" || c == "counterclockwise") {
@@ -75,10 +78,10 @@ int main(int argc, char *argv[]) {
                     game.setCurrBlock(c.at(0));
                 }
                 else if (c == "levelup") {
-                    game.levelChange(1);
+                    game.levelChange(repeats);
                 }
                 else if (c == "leveldown") {
-                    game.levelChange(-1);
+                    game.levelChange(-repeats);
                 }
                 else if (c == "norandom") {
                     // NOT IMPLEMENTED YET I THINK
@@ -94,16 +97,20 @@ int main(int argc, char *argv[]) {
                     game.restartGame();
                 }
                 game.boardsPrint();
+                break;
             }
             else if (commands.size() == 0) {
                 // nothing matched, uh oh moment
                 cout << "uh oh moment" << endl;
+                break;
+            }
+            else {
+                ++i;
             }
         }
 
         if (game.isGameOver()) {
             return 0;
         }
-        repeats = 1;
     }
 }

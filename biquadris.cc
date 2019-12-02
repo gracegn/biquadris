@@ -68,7 +68,7 @@ void Biquadris::boardsPrint() {
     bool blind1 = player1.getInfo().isBlind;
     bool blind2 = player2.getInfo().isBlind;
 
-    string space = "\t\t\t";
+    string space = "\t\t";
     string sep = "-----------";
     cout << "Level:    " << player1.getInfo().level << space << "Level:    " << player2.getInfo().level << endl;
     cout << "Score:    " << player1.getInfo().score << space << "Score:    " << player2.getInfo().score << endl;
@@ -97,11 +97,13 @@ void Biquadris::boardsPrint() {
         else {
             cout << td->rowString(2, i);
         }
+
+        cout << endl;
     }
 
     cout << sep << space << sep << endl;
     cout << "Next:      " << space << "Next:      " << endl;
-    // next output
+    cout << player1.getInfo().nextBlock << space << player2.getInfo().nextBlock << endl;
 }
 
 bool Biquadris::isGameOver() const {

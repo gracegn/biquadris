@@ -4,7 +4,7 @@
 struct playerInfo {
   int level;  // level # the player selected
   int score;  // current player score
-  char nextType;  // type of next block
+  char nextBlock;  // type of next block
   bool gameOver;
   bool isBlind;
 };

@@ -11,6 +11,7 @@ using namespace std;
 Board::Board(int seed, int level) : level{level} {
     srand(seed); // i have no idea where this is supposed to go, hopefully here lol
     endTurn(); // to set up the first blocks
+    cout << "board constructor!!" << endl;
 }
 
 Board::~Board() {
@@ -20,6 +21,7 @@ Board::~Board() {
 void Board::levelChange(int change) {
     level += change;
     if (level < 0) level = 0;
+    if (level > 4) level = 4;
 }
 
 void Board::move(string action, int i) {
@@ -67,6 +69,7 @@ void Board::endTurn() {
         gameOver = true;
     }
     nextBlock = generateNext(level);
+    cout << "nextblock = " << nextBlock << endl;
     // notify displays and observers
 }
 
