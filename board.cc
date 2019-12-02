@@ -17,13 +17,12 @@ Board::Board(int seed, int level, string scriptFile) : level{level} {
         fstream sequence;
         sequence.open(sequenceFile);
         char block;
-        while (cin << block) {
+        while (sequence >> block) {
             blockOrder.emplace_back(block);
         }
     }
 
     endTurn(); // to set up the first blocks
-    cout << "board constructor!!" << endl;
 }
 
 Board::~Board() {
@@ -81,25 +80,24 @@ void Board::endTurn() {
         gameOver = true;
     }
     nextBlock = generateNext(level);
-    cout << "nextblock = " << nextBlock << endl;
     // notify displays and observers
 }
 
 char Board::generateNext(int level) {
     if (level == 0) {
         if (blockOrder.empty()) {
-        fstream sequence;
-        sequence.open(sequenceFile);
-        char block;
-        while (cin << block) {
-            blockOrder.emplace_back(block);
+            fstream sequence;
+            sequence.open(sequenceFile);
+            char block;
+            while (sequence >> block) {
+                blockOrder.emplace_back(block);
+            }
         }
         else {
             char block = blockOrder.front();
             blockOrder.erase(blockOrder.begin());
             return block;
         }
-    }
     }
     else if (level == 1) {
         int type = (rand() % 12);

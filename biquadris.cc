@@ -104,7 +104,7 @@ void Biquadris::boardsPrint() {
 
     cout << sep << space << sep << endl;
     cout << "Next:      " << space << "Next:      " << endl;
-    cout << player1.getInfo().nextBlock << space << player2.getInfo().nextBlock << endl;
+    cout << player1.getInfo().nextBlock << space << "\t" << player2.getInfo().nextBlock << endl;
 }
 
 bool Biquadris::isGameOver() const {
