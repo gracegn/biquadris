@@ -1,4 +1,5 @@
 #include <iostream>
+#include "cellinfo.h"
 #include "textdisplay.h"
 using namespace std;
 
@@ -14,7 +15,7 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
 }
 
 void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
-
+    blockParts = whoNotified.getParts();
 }
 
 // this is a 'helper' for Biquadris::boardsPrint
@@ -26,10 +27,30 @@ string TextDisplay::rowString(int player, int row, string blind) {
             if (3 <= i && i <= 9)
                 str += "?";
             else {
-                if (player == 1)
+                if (player == 1) {
+                    for (auto part: blockParts) {
+                        cellInfo info = part.getInfo();
+                        if (info.isFilled()) {
+                            if (info.x == row && info.y == i) {
+                                str += info.type;
+                                continue;
+                            }
+                        }
+                    }
                     str += display1.at(row).at(i);
-                else
+                }
+                else {
+                    for (auto part: blockParts) {
+                        cellInfo info = part.getInfo();
+                        if (info.isFilled()) {
+                            if (info.x == row && info.y == i) {
+                                str += info.type;
+                                continue;
+                            }
+                        }
+                    }
                     str += display2.at(row).at(i);
+                }
             }
         }
     }
@@ -41,10 +62,30 @@ string TextDisplay::rowString(int player, int row, string blind) {
 
     else {
         for (int i = 0; i < cols; ++i) {
-            if (player == 1)
+            if (player == 1) {
+                for (auto part: blockParts) {
+                    cellInfo info = part.getInfo();
+                    if (info.isFilled()) {
+                        if (info.x == row && info.y == i) {
+                            str += info.type;
+                            continue;
+                        }
+                    }
+                }
                 str += display1.at(row).at(i);
-            else
+            }
+            else {
+                for (auto part: blockParts) {
+                    cellInfo info = part.getInfo();
+                    if (info.isFilled()) {
+                        if (info.x == row && info.y == i) {
+                            str += info.type;
+                            continue;
+                        }
+                    }
+                }
                 str += display2.at(row).at(i);
+            }
         }
     }
     

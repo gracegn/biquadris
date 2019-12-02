@@ -91,7 +91,7 @@ char Board::generateNext(int level) {
         fstream sequence;
         sequence.open(sequenceFile);
         char block;
-        while (cin << block) {
+        while (sequence >> block) {
             blockOrder.emplace_back(block);
         }
         else {
