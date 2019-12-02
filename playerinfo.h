@@ -1,5 +1,7 @@
 #ifndef PLAYERINFO_H
 #define PLAYERINFO_H
+#include <vector>
+#include "cellinfo.h"
 
 struct playerInfo {
   int level;  // level # the player selected
@@ -7,6 +9,7 @@ struct playerInfo {
   char nextBlock;  // type of next block
   bool gameOver;
   bool isBlind;
+  std::vector<cellInfo> parts;
 };
 
 #endif

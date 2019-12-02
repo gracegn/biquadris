@@ -24,7 +24,7 @@ class Block: public Subject<blockInfo> {
   void rotate(int i);
  public:
   ~Block();
-  Block(char type, int level, int turn, const std::vector<std::vector<Cell>> &gameBoard);
+  Block(char type, int level, const std::vector<std::vector<Cell>> &gameBoard);
   
   const std::vector<Cell> &getParts();
   blockInfo getInfo() const override;

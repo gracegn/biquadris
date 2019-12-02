@@ -201,7 +201,12 @@ int Board::clearRow(int rownum) {
 }
 
 playerInfo Board::getInfo() const {
-    return {level, score, nextBlock, gameOver, isBlind};
+    vector<Cell> parts = currBlock->getParts();
+    vector<cellInfo> partsInfo;
+    for (auto cell : parts) {
+        partsInfo.emplace_back(cell.getInfo());
+    }
+    return {level, score, nextBlock, gameOver, isBlind, partsInfo};
 };
 
 // void Board::notify(Subject<blockInfo> &whoNotified) {

@@ -27,7 +27,7 @@ class Board : public Subject<playerInfo> {
 
   Block* currBlock;
   char nextBlock;
-
+  
   bool isHeavy; // from opponent's special action
   bool isBlind = false;
   bool gameOver = false;

@@ -25,7 +25,7 @@ void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
     }
 }
 void TextDisplay::notify(Subject<playerInfo> &whoNotified) {
-    // blockParts = whoNotified.getParts();
+    blockParts = whoNotified.getInfo().parts;
 }
 
 // this is a 'helper' for Biquadris::boardsPrint
@@ -38,8 +38,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
                 str += "?";
             else {
                 if (player == 1) {
-                    for (auto part: blockParts) {
-                        cellInfo info = part.getInfo();
+                    for (auto info: blockParts) {
                         if (info.isFilled) {
                             if (info.x == row && info.y == i) {
                                 str += info.type;
@@ -50,8 +49,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
                     str += display1.at(row).at(i);
                 }
                 else {
-                    for (auto part: blockParts) {
-                        cellInfo info = part.getInfo();
+                    for (auto info: blockParts) {
                         if (info.isFilled) {
                             if (info.x == row && info.y == i) {
                                 str += info.type;
@@ -73,8 +71,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
     else {
         for (int i = 0; i < cols; ++i) {
             if (player == 1) {
-                for (auto part: blockParts) {
-                    cellInfo info = part.getInfo();
+                for (auto info: blockParts) {
                     if (info.isFilled) {
                         if (info.x == row && info.y == i) {
                             str += info.type;
@@ -85,8 +82,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
                 str += display1.at(row).at(i);
             }
             else {
-                for (auto part: blockParts) {
-                    cellInfo info = part.getInfo();
+                for (auto info: blockParts) {
                     if (info.isFilled) {
                         if (info.x == row && info.y == i) {
                             str += info.type;

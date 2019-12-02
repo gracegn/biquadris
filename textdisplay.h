@@ -3,19 +3,20 @@
 #include <iostream>
 #include <vector>
 #include "absdisplay.h"
+#include "cellinfo.h"
 class Cell;
 
 class TextDisplay: public AbsDisplay {
   std::vector<std::vector<char>> display1;
   std::vector<std::vector<char>> display2;
 
-  std::vector<Cell> blockParts;
+  // std::vector<Cell> blockParts;
+  std::vector<cellInfo> blockParts;
  public:
   TextDisplay(int rows, int cols);
 
   void notify(Subject<cellInfo> &whoNotified) override;
   void notify(Subject<playerInfo> &whoNotified) override;
-  // void notification(Board &notifier);
   void print(int player = 0);  // player = the one we add blind to, 0 means neither
   std::string rowString(int player, int row, std::string blind = "");
 };

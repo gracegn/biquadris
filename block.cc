@@ -1,20 +1,11 @@
 #include "block.h"
 using namespace std;
 
-map<char,vector<vector<bool>>> Block::blockSettings = {
-  {'O', {{true, true}, {true, true}}},
-  {'J', {{true, false, false}, {true, true, true}}},
-  {'I', {{true, true, true, true}}},
-  {'Z', {{true, true, false}, {false, true, true}}},
-  {'T', {{true, true, true}, {false, true, false}}},
-  {'S', {{false, true, true}, {true, true, false}}},
-  {'L', {{false, false, true}, {true, true, true}}}
-};
 
 // we chose to have the constructor interpret the type of block to create,
 // as having a class for each block type would clutter up the file system
 // while sharing the exact same methods for everything but the constructor.
-Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameBoard) : info{level, type, 3, 0} {
+Block::Block(char type, int level, const vector<vector<Cell>> &gameBoard) : info{level, type, 3, 0} {
     // each cells' parts vector is a vector of cells the size of the
     // smallest rectangle that encompasses the whole block. For example,
     // a 'Z' block has 6 cells in parts, with height 2 and width 3.
@@ -26,19 +17,97 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
     // rows above where the block would be created.
     board = gameBoard;
 
-    vector<vector<bool>> setting = blockSettings[type]; //throw exception if invalid type entered
+    if (type == 'O') {
+        height = 2;
+        width = 2;
 
-    height = setting.size();
-    width = setting.at(0).size();
-
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
-            if (setting[i][j]) {
-                parts.emplace_back(Cell{i + 3, j, true, type, this, player});
-            } else {
-                parts.emplace_back(Cell{i + 3, j, false, type, this, player});
-            } 
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; i < width; ++i) {
+                parts.emplace_back(Cell{i + 3, j, true, type, this});
+            }
         }
+    }
+    else if (type == 'I') {
+        height = 1;
+        width = 4;
+
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; i < width; ++i) {
+                parts.emplace_back(Cell{i + 3, j, true, type, this});
+            }
+        }
+    }
+    else if (type == 'J') {
+        height = 2;
+        width = 3;
+
+        parts.emplace_back(Cell{0 + 3, 0, true, type, this});
+
+        // cells [0,1] and [0,2] are unfilled cells, with no owner.
+        parts.emplace_back(Cell{0 + 3, 1, false, 'E', nullptr});
+        parts.emplace_back(Cell{0 + 3, 2, false, 'E', nullptr});
+
+        parts.emplace_back(Cell{1 + 3, 0, true, type, this});
+        parts.emplace_back(Cell{1 + 3, 1 , true, type, this});
+        parts.emplace_back(Cell{1 + 3, 2, true, type, this});
+    }
+    else if (type == 'L') {
+        height = 2;
+        width = 3;
+
+        // cells [0,0] and [0,1] are unfilled cells, with no owner.
+        parts.emplace_back(Cell{0+3,0,false,'E', nullptr});
+        parts.emplace_back(Cell{0+3,1,false,'E', nullptr});
+
+        parts.emplace_back(Cell{0+3,2,true,type, this});
+        parts.emplace_back(Cell{1+3,0,true,type, this});
+        parts.emplace_back(Cell{1+3,1,true,type, this});
+        parts.emplace_back(Cell{1+3,2,true,type, this});
+    }
+    else if (type == 'T') {
+        height = 2;
+        width = 3;
+
+
+        parts.emplace_back(Cell{0+3,0,true,type, this});
+        parts.emplace_back(Cell{0+3,1,true,type, this});
+        parts.emplace_back(Cell{0+3,2,true,type, this});
+
+        // cells [1,0] and [1,2] are unfilled cells, with no owner.
+        parts.emplace_back(Cell{1+3,0,false,'E', nullptr});
+        parts.emplace_back(Cell{1+3,1,true,type, this});
+        parts.emplace_back(Cell{1+3,2,false,'E', nullptr});
+    }
+    else if (type == 'Z') {
+        height = 2;
+        width = 3;
+
+        // we create unfilled cells similar to the pattern above
+
+        parts.emplace_back(Cell{0+3,0,true,type, this});
+        parts.emplace_back(Cell{0+3,1,true,type, this});
+        parts.emplace_back(Cell{0+3,2,false,'E', nullptr});
+
+        parts.emplace_back(Cell{1+3,0,false,'E', nullptr});
+        parts.emplace_back(Cell{1+3,1,true,type, this});
+        parts.emplace_back(Cell{1+3,2,true,type, this});
+    }
+    else if (type == 'S') {
+        height = 2;
+        width = 3;
+
+        // we create unfilled cells similar to the pattern above
+
+        parts.emplace_back(Cell{0+3,0,false,'E', nullptr});
+        parts.emplace_back(Cell{0+3,1,true,type, this});
+        parts.emplace_back(Cell{0+3,2,true,type, this});
+
+        parts.emplace_back(Cell{1+3,0,true,type, this});
+        parts.emplace_back(Cell{1+3,1,true,type, this});
+        parts.emplace_back(Cell{1+3,2,false,'E', nullptr});
+    }
+    else {
+        // throw an exception maybe
     }
 }
 
@@ -51,7 +120,7 @@ const vector<Cell> &Block::getParts() {
 bool Block::checkOverlap() {
     // for each filled Cell in parts, we check if the cell in Board is taken
     for (Cell cell : parts) {
-        if (cell.getInfo().isFilled && board.at(cell.getInfo().x).at(cell.getInfo().y).getInfo().isFilled) return true;
+        if (cell.getInfo().isFilled && board[cell.getInfo().x][cell.getInfo().y].getInfo().isFilled) return true;
     }
 
     return false;
