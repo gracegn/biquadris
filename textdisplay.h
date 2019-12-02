@@ -3,11 +3,13 @@
 #include <iostream>
 #include <vector>
 #include "absdisplay.h"
-//class Cell;
+class Cell;
 
 class TextDisplay: public AbsDisplay {
   std::vector<std::vector<char>> display1;
   std::vector<std::vector<char>> display2;
+
+  std::vector<Cell> blockParts;
  public:
   TextDisplay(int rows, int cols);
 
