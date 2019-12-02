@@ -77,9 +77,9 @@ void Block::move(string action, int repeats) {
                     }
                 }
             }
-            --info.llx;
+            --info.lly;
             for (int j = 0; j < parts.size(); ++j) {
-                parts.at(j).addToX(-1);
+                parts.at(j).addToY(-1);
             }
         } else if (action == "right") {
 
@@ -98,9 +98,9 @@ void Block::move(string action, int repeats) {
                         }
                     }
             }
-            ++info.llx;
+            ++info.lly;
             for (int j = 0; j < parts.size(); ++j) {
-                parts.at(j).addToX(1);
+                parts.at(j).addToY(1);
             }
         } else if (action == "down") {
             // check if we're allowed to move down, ie no board or blocked
@@ -119,9 +119,9 @@ void Block::move(string action, int repeats) {
                     }
                 }
             }
-            ++info.lly;
+            ++info.llx;
             for (int j = 0; j < parts.size(); ++j) {
-                parts.at(j).addToY(-1);
+                parts.at(j).addToX(-1);
             }
         } else if (action == "counterclockwise") {
             i %= 4;

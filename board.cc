@@ -56,7 +56,7 @@ void Board::move(string action, int i) {
         for (auto cell : parts) {
             if (cell.getInfo().isFilled) {
                 // assign our block's cell to this cell.
-                myBoard.at(info.x).at(info.y) = cell;
+                myBoard.at(cell.getInfo().x).at(cell.getInfo().y) = cell;
             }
         }
 
