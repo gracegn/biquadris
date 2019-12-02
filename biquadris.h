@@ -20,7 +20,7 @@ class Biquadris {
   void toggleTurn();
 
  public:
-  Biquadris(int start_level, int newseed, bool textOnly, int rows = 15, int cols = 11); //  we just make newGame the constructor of biquadris
+  Biquadris(int start_level, int newseed, bool textOnly, string scriptfile1, string scriptfile2, int rows = 15, int cols = 11); //  we just make newGame the constructor of biquadris
   ~Biquadris();
   
   bool isGameOver() const;

@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    Biquadris game(start_level, seed, onlyText);
+    Biquadris game(start_level, seed, onlyText, scriptfile1, scriptfile2);
     game.boardsPrint();
     string input;
     int repeats;

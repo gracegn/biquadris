@@ -8,8 +8,10 @@
 #include "cell.h"
 using namespace std;
 
-Board::Board(int seed, int level) : level{level} {
+Board::Board(int seed, int level, string scriptFile) : level{level} {
     srand(seed); // i have no idea where this is supposed to go, hopefully here lol
+    if (scriptFile != "") sequenceFile = scriptFile;
+
     endTurn(); // to set up the first blocks
     cout << "board constructor!!" << endl;
 }

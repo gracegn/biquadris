@@ -18,6 +18,7 @@ class Board: public Observer<blockInfo> {
   int score = 0;
   // int seed;
   int level;
+  string sequenceFile;
 
   Block* currBlock;
   char nextBlock;
@@ -29,7 +30,7 @@ class Board: public Observer<blockInfo> {
  public:
   ~Board();
   
-  Board(int seed, int level = 0);
+  Board(int seed, int level, string scriptfile = "");
   void levelChange(int change);
   void move(string action, int i = 0);
 
