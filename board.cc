@@ -80,7 +80,7 @@ void Board::endTurn() {
         gameOver = true;
     }
     nextBlock = generateNext(level);
-    // notify displays and observers
+    notifyObservers();
 }
 
 char Board::generateNext(int level) {
@@ -192,6 +192,6 @@ playerInfo Board::getInfo() const {
     return {level, score, nextBlock, gameOver, isBlind};
 };
 
-void Board::notify(Subject<blockInfo> &whoNotified) {
+// void Board::notify(Subject<blockInfo> &whoNotified) {
 
-}
+// }

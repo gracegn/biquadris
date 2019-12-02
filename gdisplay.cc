@@ -9,6 +9,9 @@ GraphicsDisplay::GraphicsDisplay(playerInfo info1, playerInfo info2, int rows, i
 void GraphicsDisplay::notify(Subject<cellInfo> &whoNotified) {
 
 }
+void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified) {
+
+}
 
 void GraphicsDisplay::updateInfo(playerInfo player1, playerInfo player2) {
     info1 = player1;

@@ -14,6 +14,8 @@ class TextDisplay: public AbsDisplay {
   TextDisplay(int rows, int cols);
 
   void notify(Subject<cellInfo> &whoNotified) override;
+  void notify(Subject<playerInfo> &whoNotified) override;
+  // void notification(Board &notifier);
   void print(int player = 0);  // player = the one we add blind to, 0 means neither
   std::string rowString(int player, int row, std::string blind = "");
 };

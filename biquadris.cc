@@ -13,15 +13,26 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
     seed = newseed;
 
     td = new TextDisplay{rows, cols};
-    if (!textOnly) gd = new GraphicsDisplay{{start_level, 0, 'E'}, {start_level, 0, 'E'}, rows, cols};
+    player1.attach(td);
+    player2.attach(td);
+
+    if (!textOnly) {
+        gd = new GraphicsDisplay{{start_level, 0, 'E'}, {start_level, 0, 'E'}, rows, cols};
+        player1.attach(gd);
+        player2.attach(gd);
+    }
 }
 
 void Biquadris::restartGame() {
     delete td;
     td = new TextDisplay{boardHeight, boardWidth};
+    player1.attach(td);
+    player2.attach(td);
     if (!textOnly) {
         delete gd;
         gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
+        player1.attach(gd);
+        player2.attach(gd);
     }
 
     player1 = Board(seed, player1.getInfo().level);
@@ -30,6 +41,7 @@ void Biquadris::restartGame() {
 }
 
 // when level, score, or 'next' gets updated aka after every turn?
+// DEAL WITH THIS LATER!!!!!! THIS ISN'T EVEN GETTING CALLED RN
 void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
     // td->updateInfo(player1, player2); idk if this is even necessary anymore bc text is updated here
     if (!textOnly) gd->updateInfo(player1, player2);
@@ -73,7 +85,7 @@ void Biquadris::boardsPrint() {
     cout << "Level:    " << player1.getInfo().level << space << "Level:    " << player2.getInfo().level << endl;
     cout << "Score:    " << player1.getInfo().score << space << "Score:    " << player2.getInfo().score << endl;
     cout << sep << space << sep << endl;
-
+    
     
     for (int i = 0; i < boardHeight; ++i) {
         if (blind1) {

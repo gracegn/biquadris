@@ -1,5 +1,6 @@
 #include <iostream>
 #include "cellinfo.h"
+#include "cell.h"
 #include "textdisplay.h"
 using namespace std;
 
@@ -15,7 +16,10 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
 }
 
 void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
-    blockParts = whoNotified.getParts();
+    // blockParts = whoNotified.getParts();
+}
+void TextDisplay::notify(Subject<playerInfo> &whoNotified) {
+    // blockParts = whoNotified.getParts();
 }
 
 // this is a 'helper' for Biquadris::boardsPrint
@@ -30,7 +34,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
                 if (player == 1) {
                     for (auto part: blockParts) {
                         cellInfo info = part.getInfo();
-                        if (info.isFilled()) {
+                        if (info.isFilled) {
                             if (info.x == row && info.y == i) {
                                 str += info.type;
                                 continue;
@@ -42,7 +46,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
                 else {
                     for (auto part: blockParts) {
                         cellInfo info = part.getInfo();
-                        if (info.isFilled()) {
+                        if (info.isFilled) {
                             if (info.x == row && info.y == i) {
                                 str += info.type;
                                 continue;
@@ -65,7 +69,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
             if (player == 1) {
                 for (auto part: blockParts) {
                     cellInfo info = part.getInfo();
-                    if (info.isFilled()) {
+                    if (info.isFilled) {
                         if (info.x == row && info.y == i) {
                             str += info.type;
                             continue;
@@ -77,7 +81,7 @@ string TextDisplay::rowString(int player, int row, string blind) {
             else {
                 for (auto part: blockParts) {
                     cellInfo info = part.getInfo();
-                    if (info.isFilled()) {
+                    if (info.isFilled) {
                         if (info.x == row && info.y == i) {
                             str += info.type;
                             continue;
