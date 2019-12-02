@@ -115,7 +115,31 @@ void Biquadris::boardsPrint() {
 
     cout << sep << space << sep << endl;
     cout << "Next:      " << space << "Next:      " << endl;
-    cout << player1.getInfo().nextBlock << space << "\t" << player2.getInfo().nextBlock << endl;
+
+    char block1 = player1.getInfo().nextBlock;
+    vector<vector<bool>> setting1 = player1.getCurrBlock()->blockSettings[block1];
+    char block2 = player2.getInfo().nextBlock;
+    vector<vector<bool>> setting2 = player2.getCurrBlock()->blockSettings[block2];
+
+    for (int j = 0; j < max(setting1.size(), setting2.size()); ++j) {
+        if (setting1.size() > j) {
+            for (int i = 0; i < setting1[0].size(); ++i) {
+                setting1[j][i] ? cout << block1 : cout << ' ';
+            }
+        }
+
+        cout << space << "\t";
+
+        if (setting2.size() > j) {
+            for (int i = 0; i < setting2[0].size(); ++i) {
+                setting2[j][i] ? cout << block2 : cout << ' ';
+            }
+        }
+
+        cout << endl;
+    }
+
+    //cout << player1.getInfo().nextBlock << space << "\t" << player2.getInfo().nextBlock << endl;
 }
 
 bool Biquadris::isGameOver() const {

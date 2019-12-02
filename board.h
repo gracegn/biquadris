@@ -46,6 +46,7 @@ class Board : public Subject<playerInfo> {
   void toggleBlind();
   void setHeavy();
   void setNextBlock(char newtype);
+  Block* getCurrBlock();
   void setCurrBlock(char newtype);
 
   bool isRowFull(int rownum) const;

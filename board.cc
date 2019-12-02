@@ -200,6 +200,8 @@ int Board::clearRow(int rownum) {
     return blockScore;
 }
 
+Block* Board::getCurrBlock() {return currBlock; }
+
 playerInfo Board::getInfo() const {
     return {level, score, nextBlock, gameOver, isBlind};
 };
