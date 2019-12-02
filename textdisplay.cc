@@ -15,8 +15,14 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
     }
 }
 
+
 void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
-    // blockParts = whoNotified.getParts();
+    cellInfo info = whoNotified.getInfo();
+    if (info.isFilled) {
+        display1[info.x][info.y] = info.type;
+    } else {
+        display1[info.x][info.y] = ' ';
+    }
 }
 void TextDisplay::notify(Subject<playerInfo> &whoNotified) {
     // blockParts = whoNotified.getParts();

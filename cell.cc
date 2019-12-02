@@ -1,9 +1,9 @@
 #include "cell.h"
 
-Cell::Cell(int x, int y, bool isFilled, char type, Block* owner) : x{x}, y{y}, isFilled{isFilled}, type{type}, owner{owner} {}
+Cell::Cell(int x, int y, bool isFilled, char type, Block* owner, int player) : x{x}, y{y}, isFilled{isFilled}, type{type}, owner{owner}, player{player} {}
 
 cellInfo Cell::getInfo() const {
-    return cellInfo {x, y, isFilled, type};
+    return cellInfo {x, y, isFilled, type, player};
 }
 
 Block* Cell::getOwner() {

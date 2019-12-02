@@ -17,21 +17,25 @@ class Board : public Subject<playerInfo> {
   Board* oppBoard;
   int score = 0;
   // int seed;
+  int player;
   int level;
   string sequenceFile;
   vector<char> blockOrder;
+
+  int width = 11;
+  int height = 18;
 
   Block* currBlock;
   char nextBlock;
 
   bool isHeavy; // from opponent's special action
-  bool isBlind;
+  bool isBlind = false;
   bool gameOver = false;
 
  public:
   ~Board();
   
-  Board(int seed, int level, string scriptfile = "");
+  Board(int seed, int level, int player, string scriptfile = "");
   void levelChange(int change);
   void move(string action, int i = 0);
 
