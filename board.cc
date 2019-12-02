@@ -46,7 +46,7 @@ void Board::levelChange(int change) {
     if (level > 4) level = 4;
 }
 
-void Board::move(string action, int i) {
+void Board::move(string action, int repeats) {
     if (action == "drop") {
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);
@@ -62,17 +62,18 @@ void Board::move(string action, int i) {
 
         int numRowsCleared = 0;
         int blocksErasedScore = 0;
-        for (int i = 0; i < 18; ++i) {
-            if (isRowFull(i)) {
-                blocksErasedScore += clearRow(i);
+        for (int row = 0; row < 18; ++row) {
+            if (isRowFull(row)) {
+                blocksErasedScore += clearRow(row);
                 ++numRowsCleared;
             }
         }
-        score += pow(level + numRowsCleared, 2) + blocksErasedScore; // highscore is updated in biquadris
+        // highscore is updated in biquadris
+        score += pow(level + numRowsCleared, 2) + blocksErasedScore; 
         endTurn();
     }
     else {
-        currBlock->move(action, i);
+        currBlock->move(action, repeats);
         notifyObservers();
     }
 }

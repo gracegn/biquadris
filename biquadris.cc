@@ -61,18 +61,20 @@ void Biquadris::setCurrBlock(char newType) {
 } 
 
 
-void Biquadris::move(string action, int i) {
+void Biquadris::move(string action, int repeats) {
     if (action == "drop") { // for "drop" actions, we want to end the player's turn afterwards
-        if (turn == 1) {
-            player1.move(action);
-            if (highscore < player1.getInfo().score) highscore = player1.getInfo().score;
-        } else {
-            player2.move(action);
-            if (highscore < player2.getInfo().score) highscore = player2.getInfo().score;
+        for (int i = 0; i < repeats; ++i) {
+            if (turn == 1) {
+                player1.move(action);
+                if (highscore < player1.getInfo().score) highscore = player1.getInfo().score;
+            } else {
+                player2.move(action);
+                if (highscore < player2.getInfo().score) highscore = player2.getInfo().score;
+            }
         }
         toggleTurn();
     } else {
-        turn == 1 ? player1.move(action, i) : player2.move(action, i);
+        turn == 1 ? player1.move(action, repeats) : player2.move(action, repeats);
     }
 }
 
