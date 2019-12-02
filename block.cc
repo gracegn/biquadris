@@ -121,7 +121,7 @@ void Block::move(string action, int repeats) {
             }
             ++info.llx;
             for (int j = 0; j < parts.size(); ++j) {
-                parts.at(j).addToX(-1);
+                parts.at(j).addToX(1);
             }
         } else if (action == "counterclockwise") {
             i %= 4;
