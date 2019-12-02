@@ -6,8 +6,7 @@ Biquadris::~Biquadris() {
     delete gd;
 }
   
-Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols) :
-  player1{Board(newseed, start_level, scriptfile1)}, player2{Board(newseed, start_level, scriptfile2)} {
+Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols) : player1{Board(newseed, start_level, scriptfile1)}, player2{Board(newseed, start_level, scriptfile2)} {
     boardHeight = rows;
     boardWidth = cols;
     textOnly = onlyText;
@@ -104,7 +103,7 @@ void Biquadris::boardsPrint() {
 
     cout << sep << space << sep << endl;
     cout << "Next:      " << space << "Next:      " << endl;
-    cout << player1.getInfo().nextBlock << space << player2.getInfo().nextBlock << endl;
+    cout << player1.getInfo().nextBlock << space << "\t" << player2.getInfo().nextBlock << endl;
 }
 
 bool Biquadris::isGameOver() const {
