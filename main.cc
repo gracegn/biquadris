@@ -110,6 +110,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (game.isGameOver()) {
+            cout << "Game over!" << endl;
             return 0;
         }
     }

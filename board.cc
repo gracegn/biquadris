@@ -110,11 +110,9 @@ char Board::generateNext(int level) {
                 blockOrder.emplace_back(block);
             }
         }
-        else {
-            char block = blockOrder.front();
-            blockOrder.erase(blockOrder.begin());
-            return block;
-        }
+        char block = blockOrder.front();
+        blockOrder.erase(blockOrder.begin());
+        return block;
     }
     else if (level == 1) {
         int type = (rand() % 12);
