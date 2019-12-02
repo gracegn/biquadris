@@ -19,6 +19,7 @@ class Board: public Observer<blockInfo> {
   // int seed;
   int level;
   string sequenceFile;
+  vector<char> blockOrder;
 
   Block* currBlock;
   char nextBlock;

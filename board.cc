@@ -1,6 +1,7 @@
 #include <string>
 #include <cstdlib>
 #include <cmath> // for squaring, are we allowed??
+#include <fstream>
 #include "board.h"
 #include "block.h"
 #include "textdisplay.h"
@@ -11,6 +12,15 @@ using namespace std;
 Board::Board(int seed, int level, string scriptFile) : level{level} {
     srand(seed); // i have no idea where this is supposed to go, hopefully here lol
     if (scriptFile != "") sequenceFile = scriptFile;
+
+    if (level == 0) {
+        fstream sequence;
+        sequence.open(sequenceFile);
+        char block;
+        while (cin << block) {
+            blockOrder.emplace_back(block);
+        }
+    }
 
     endTurn(); // to set up the first blocks
     cout << "board constructor!!" << endl;
@@ -77,7 +87,19 @@ void Board::endTurn() {
 
 char Board::generateNext(int level) {
     if (level == 0) {
-        //read in from txt file
+        if (blockOrder.empty()) {
+        fstream sequence;
+        sequence.open(sequenceFile);
+        char block;
+        while (cin << block) {
+            blockOrder.emplace_back(block);
+        }
+        else {
+            char block = blockOrder.front();
+            blockOrder.erase(blockOrder.begin());
+            return block;
+        }
+    }
     }
     else if (level == 1) {
         int type = (rand() % 12);
