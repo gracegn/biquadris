@@ -33,7 +33,7 @@ Board::Board(int seed, int level, int player, string scriptFile) : level{level} 
         myBoard.emplace_back(tempvec);
     }
 
-    endTurn(); // to set up the first blocks
+    // endTurn(); // to set up the first blocks
 }
 
 Board::~Board() {

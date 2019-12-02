@@ -10,7 +10,6 @@ class TextDisplay: public AbsDisplay {
   std::vector<std::vector<char>> display1;
   std::vector<std::vector<char>> display2;
 
-  // std::vector<Cell> blockParts;
   std::vector<cellInfo> blockParts;
  public:
   TextDisplay(int rows, int cols);

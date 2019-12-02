@@ -21,22 +21,30 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
         player1.attach(gd);
         player2.attach(gd);
     }
+
+    player1.endTurn();
+    player2.endTurn();
 }
 
 void Biquadris::restartGame() {
     delete td;
     td = new TextDisplay{boardHeight, boardWidth};
-    player1.attach(td);
-    player2.attach(td);
     if (!textOnly) {
         delete gd;
         gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
-        player1.attach(gd);
-        player2.attach(gd);
     }
 
     player1 = Board(seed, player1.getInfo().level, 1);
     player2 = Board(seed, player2.getInfo().level, 2);
+    player1.attach(td);
+    player2.attach(td);
+    if (!textOnly) {
+        player1.attach(gd);
+        player2.attach(gd);
+    }
+
+    player1.endTurn();
+    player2.endTurn();
     turn = 1;
 }
 

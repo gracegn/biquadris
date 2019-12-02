@@ -55,16 +55,15 @@ int main(int argc, char *argv[]) {
         while (sInput >> read) {
 
             for (int index = 0; index < buffer.size(); ++index) {
-                // cout << buffer[index] << "[0] = " << buffer[index][i] << endl;
                 if (read != buffer[index][i]) {
                     buffer.erase(buffer.begin() + index);
                     --index;
                 }
             }
 
-            for (string com : buffer)
-                    cout << com << " ";
-                cout << endl << endl;
+            // for (string com : buffer)
+            //         cout << com << " ";
+            //     cout << endl << endl;
 
             if (buffer.size() == 1) {
                 string c = buffer[0];

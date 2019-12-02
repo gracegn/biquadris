@@ -17,6 +17,7 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
 
 
 void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
+    cout << "td notified in cellinfo" << endl;
     cellInfo info = whoNotified.getInfo();
     if (info.isFilled) {
         display1[info.x][info.y] = info.type;
