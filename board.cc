@@ -9,7 +9,7 @@
 #include "cell.h"
 using namespace std;
 
-Board::Board(int seed, int level, int player, string scriptFile) : level{level} {
+Board::Board(int seed, int level, int player, string scriptFile) : player{player}, level{level} {
     srand(seed); // i have no idea where this is supposed to go, hopefully here lol
     if (scriptFile != "") sequenceFile = scriptFile;
 
@@ -54,8 +54,7 @@ void Board::move(string action, int i) {
         // here we "lock" the block to the board.
         vector<Cell> parts = currBlock->getParts();
         for (auto cell : parts) {
-            cellInfo info = cell.getInfo();
-            if (info.isFilled) {
+            if (cell.getInfo().isFilled) {
                 // assign our block's cell to this cell.
                 myBoard.at(info.x).at(info.y) = cell;
             }
@@ -74,6 +73,7 @@ void Board::move(string action, int i) {
     }
     else {
         currBlock->move(action, i);
+        notifyObservers();
     }
 }
 
@@ -91,7 +91,12 @@ void Board::endTurn() {
         gameOver = true;
     }
 
+    // cout << "blockOrder: ";
+    // for (char block : blockOrder)
+    //     cout << block << ' ';
+    // cout << endl;
     nextBlock = generateNext(level);
+    // cout << "new nextBlock = " << nextBlock << endl << endl;
     notifyObservers();
 }
 
@@ -208,7 +213,7 @@ playerInfo Board::getInfo() const {
     for (auto cell : parts) {
         partsInfo.emplace_back(cell.getInfo());
     }
-    return {level, score, nextBlock, gameOver, isBlind, partsInfo};
+    return {player, level, score, nextBlock, gameOver, isBlind, partsInfo};
 };
 
 // void Board::notify(Subject<blockInfo> &whoNotified) {

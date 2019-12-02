@@ -4,7 +4,7 @@ using namespace std;
 map<char,vector<vector<bool>>> Block::blockSettings = {
   {'O', {{true, true}, {true, true}}},
   {'J', {{true, false, false}, {true, true, true}}},
-  {'I', {{true, true, true, true}}},
+  {'I', {{false, false, false, false}, {true, true, true, true}}},
   {'Z', {{true, true, false}, {false, true, true}}},
   {'T', {{true, true, true}, {false, true, false}}},
   {'S', {{false, true, true}, {true, true, false}}},
@@ -33,9 +33,9 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             if (setting[i][j]) {
-                parts.emplace_back(Cell{i + 3, j, true, type, this, player});
+                parts.emplace_back(Cell{i + 2, j, true, type, this, player});
             } else {
-                parts.emplace_back(Cell{i + 3, j, false, type, this, player});
+                parts.emplace_back(Cell{i + 2, j, false, type, this, player});
             } 
         }
     }
@@ -78,8 +78,8 @@ void Block::move(string action, int repeats) {
                 }
             }
             --info.llx;
-            for (Cell cell : parts) {
-                cell.addToX(-1);
+            for (int j = 0; j < parts.size(); ++j) {
+                parts.at(j).addToX(-1);
             }
         } else if (action == "right") {
 
@@ -99,11 +99,11 @@ void Block::move(string action, int repeats) {
                     }
             }
             ++info.llx;
-            for (Cell cell : parts) {
-                cell.addToX(1);
+            for (int j = 0; j < parts.size(); ++j) {
+                parts.at(j).addToX(1);
             }
         } else if (action == "down") {
-
+            // check if we're allowed to move down, ie no board or blocked
             for (int j = 0; j < parts.size(); ++j) {
                 cellInfo currInfo = parts.at(j).getInfo();
 
@@ -120,8 +120,8 @@ void Block::move(string action, int repeats) {
                 }
             }
             ++info.lly;
-            for (Cell cell : parts) {
-                cell.addToY(-1);
+            for (int j = 0; j < parts.size(); ++j) {
+                parts.at(j).addToY(-1);
             }
         } else if (action == "counterclockwise") {
             i %= 4;
@@ -138,18 +138,18 @@ void Block::rotate(int i) {
 
     for (int j = 0; j < i; ++j) {
         // we pretend to do the thing to check if there are conflicts
-        for (Cell cell : parts) {
-            cInfo = cell.getInfo();
+        for (int k = 0; k < parts.size(); ++k) {
+            cInfo = parts.at(k).getInfo();
             if (!board.at(cInfo.x + info.lly - cInfo.y).at(cInfo.y).getInfo().isFilled
                 || !board.at(cInfo.x).at(cInfo.y + cInfo.x - info.llx - 2).getInfo().isFilled) return;
         }
         
         // we do the thing for real
-        for (Cell cell : parts) {
-            cInfo = cell.getInfo();
+        for (int k = 0; k < parts.size(); ++k) {
+            cInfo = parts.at(k).getInfo();
 
-            cell.addToX(info.lly - cInfo.y);
-            cell.addToY(cInfo.x - info.llx - 2);
+            parts.at(k).addToX(info.lly - cInfo.y);
+            parts.at(k).addToY(cInfo.x - info.llx - 2);
         }
 
         int buf = width;

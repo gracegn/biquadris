@@ -95,6 +95,7 @@ int main(int argc, char *argv[]) {
                 else if (c == "restart") {
                     game.restartGame();
                 }
+                cout << endl;
                 game.boardsPrint();
                 break;
             }

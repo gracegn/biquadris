@@ -4,6 +4,7 @@
 #include "cellinfo.h"
 
 struct playerInfo {
+  int player; // 1 or 2
   int level;  // level # the player selected
   int score;  // current player score
   char nextBlock;  // type of next block
