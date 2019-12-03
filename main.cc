@@ -120,8 +120,17 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        if (game.isGameOver()) {
-            cout << "Game over!" << endl;
+        int isGameOver = game.isGameOver();
+        if (isGameOver != 0) {
+            cout << "G A M E O V E R" << endl;
+            cout << "HIGHSCORE: " << game.getHighscore() << endl;
+
+            if (isGameOver == 1) {
+                cout << "WINNER: Player1\t\tLOSER: Player2" << endl;
+            } else if (isGameOver == 2) {
+                cout << "LOSER: Player1\t\tWINNER: Player2" << endl;
+            }
+
             return 0;
         }
     }

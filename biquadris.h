@@ -22,8 +22,10 @@ class Biquadris {
  public:
   Biquadris(int start_level, int newseed, bool textOnly, string scriptfile1, string scriptfile2, int rows = 18, int cols = 11); //  we just make newGame the constructor of biquadris
   ~Biquadris();
-  
-  bool isGameOver() const;
+
+  int getHighscore() const;
+
+  int isGameOver() const;
   void restartGame();
   void updateDisplays(playerInfo player1, playerInfo player2);
   void move(string action, int repeats = 1);

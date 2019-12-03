@@ -163,8 +163,18 @@ void Biquadris::boardsPrint() {
     //cout << player1.getInfo().nextBlock << space << "\t" << player2.getInfo().nextBlock << endl;
 }
 
-bool Biquadris::isGameOver() const {
-    return (player1.getInfo().gameOver || player2.getInfo().gameOver);
+int Biquadris::getHighscore() const {
+    return highscore;
+}
+
+int Biquadris::isGameOver() const {
+    if (player1.getInfo().gameOver) {
+        return 1;
+    } else if (player2.getInfo().gameOver) {
+        return 2;
+    } else {
+        return 0;
+    }
 }
 
 void Biquadris::toggleTurn() {
