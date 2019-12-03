@@ -89,7 +89,7 @@ void Board::move(string action, int repeats) {
                 dropCenterBlock();
             } 
         }
-        
+
         endTurn();
     }
     else {

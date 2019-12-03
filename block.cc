@@ -179,7 +179,12 @@ bool Block::rotate(int i) {
         for (int k = 0; k < bufHeight; ++k) {
             for (int m = 0; m < bufWidth; ++m) {                           
                 if (testparts.at(k * bufWidth + m).getInfo().isFilled
-                && board.at(info.llx - bufHeight + 1 + k).at(info.lly - bufWidth + 1 + m + offset).getInfo().isFilled) {
+                && 
+                (info.llx - bufHeight + 1 + k < 0
+                || info.llx - bufHeight + 1 + k >= board.size()
+                || info.lly - bufWidth + 1 + m + offset < 0
+                || info.lly - bufWidth + 1 + m + offset >= board[0].size()
+                || board.at(info.llx - bufHeight + 1 + k).at(info.lly - bufWidth + 1 + m + offset).getInfo().isFilled)) {
                     return anySuccess;
                 }                                   
 
