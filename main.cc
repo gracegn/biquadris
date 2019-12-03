@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include "biquadris.h"
 using namespace std;
@@ -42,7 +43,31 @@ int main(int argc, char *argv[]) {
     string input;
     int repeats;
 
-    while (cin >> input) {
+    // we set buffers so that if we want to use command sequence,
+    // we can switch reading from cin to reading from our file
+    // and back again once it's empty.
+    streambuf *filebuf, *cinbuf;
+    cinbuf = cin.rdbuf();
+    ifstream file;
+    bool readFromFile = false;
+
+    while(true) {
+        cin >> input;
+
+        // we need to check if we were reading a file or from CLI
+        // to know whether to terminate the program or not
+        if (cin.eof()) {
+            if (readFromFile) {
+                cin.rdbuf(cinbuf);
+                file.close();
+                readFromFile = false;
+                continue;
+            }
+            else return 0;
+        }
+
+        cout << "I just read " << input << endl;
+        
         stringstream sInput;
         sInput << "1" << input;
         sInput >> repeats;
@@ -99,9 +124,16 @@ int main(int argc, char *argv[]) {
                     game.setRandom();
                 }
                 else if (c == "sequence") {
-                    // cin >> input; // reads file name
-                    // fstream file{input};
-                    // stream = file;
+                    string fileName;
+                    cin >> fileName; // reads file name
+                    file.open(fileName);
+
+                    // assign file's read buffer to filebuf
+                    filebuf = file.rdbuf();
+                    
+                    // cin now reading from file's buffer
+                    cin.rdbuf(filebuf);
+                    readFromFile = true;
                 }
                 else if (c == "restart") {
                     game.restartGame();
@@ -120,8 +152,17 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        if (game.isGameOver()) {
-            cout << "Game over!" << endl;
+        int isGameOver = game.isGameOver();
+        if (isGameOver != 0) {
+            cout << "G A M E O V E R" << endl;
+            cout << "HIGHSCORE: " << game.getHighscore() << endl;
+
+            if (isGameOver == 1) {
+                cout << "WINNER: Player1\t\tLOSER: Player2" << endl;
+            } else if (isGameOver == 2) {
+                cout << "LOSER: Player1\t\tWINNER: Player2" << endl;
+            }
+
             return 0;
         }
     }

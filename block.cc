@@ -14,7 +14,7 @@ map<char,vector<vector<bool>>> Block::blockSettings = {
 // we chose to have the constructor interpret the type of block to create,
 // as having a class for each block type would clutter up the file system
 // while sharing the exact same methods for everything but the constructor.
-Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameBoard) : info{level, type, 3, 0} {    // each cells' parts vector is a vector of cells the size of the
+Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameBoard, int remaining) : remaining{remaining}, info{level, type, 3, 0} {    // each cells' parts vector is a vector of cells the size of the
     // smallest rectangle that encompasses the whole block. For example,
     // a 'Z' block has 6 cells in parts, with height 2 and width 3.
     // Then, parts[0] = parts [0 * height + width] is the top left cell,
@@ -24,6 +24,12 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
     // we have to "add 3" to each row index to accomodate for the 3 extra
     // rows above where the block would be created.
     board = gameBoard;
+
+    // if it's a 1x1 level 4 block, do something special
+    if (remaining == 1) {
+        parts.emplace_back(Cell{3, 5, true, type, this, player});
+        return;
+    }
 
     vector<vector<bool>> setting = blockSettings[type]; //throw exception if invalid type entered
 
@@ -57,16 +63,16 @@ bool Block::checkOverlap() {
 }
 
 
-void Block::move(string action, int repeats) {
+bool Block::move(string action, int repeats) {
     // we repeat the move actions as many time as specified by repeats
+
+    bool anySuccess = false;
     if (action == "counterclockwise") {
         repeats %= 4;
-        if (repeats != 4) rotate(4 - repeats);
+        if (repeats != 4) anySuccess = rotate(4 - repeats);
     } else if (action == "clockwise") {
-        cout << "clockwise begin " << repeats << " times" << endl;
         repeats %= 4;
-        cout << "clockwise " << repeats << " times" << endl;
-        if (repeats != 4) rotate(repeats);
+        if (repeats != 4) anySuccess = rotate(repeats);
     }
 
     for (int i = 0; i < repeats; ++i) {
@@ -76,16 +82,17 @@ void Block::move(string action, int repeats) {
 
                 // cannot move left any further
                 if (currInfo.y == 0) {
-                    return;
+                    return anySuccess;
                 }
                 else if (currInfo.isFilled) {
                     // if the cell at position x,y is filled in our block object,
                     // make sure it's not filled in the cell we want to move to.
                     if (board.at(currInfo.x).at(currInfo.y - 1).getInfo().isFilled) {
-                        return;
+                        return anySuccess;
                     }
                 }
             }
+            anySuccess = true;
             --info.lly;
             for (int j = 0; j < parts.size(); ++j) {
                 parts.at(j).addToY(-1);
@@ -97,16 +104,17 @@ void Block::move(string action, int repeats) {
 
                     // cannot move right any further
                     if (currInfo.y == 10) {
-                        return;
+                        return anySuccess;
                     }
                     else if (currInfo.isFilled) {
                         // if the cell at position x,y is filled in our block object,
                         // make sure it's not filled in the cell we want to move to.
                         if (board.at(currInfo.x).at(currInfo.y + 1).getInfo().isFilled) {
-                            return;
+                            return anySuccess;
                         }
                     }
             }
+            anySuccess = true;
             ++info.lly;
             for (int j = 0; j < parts.size(); ++j) {
                 parts.at(j).addToY(1);
@@ -118,26 +126,29 @@ void Block::move(string action, int repeats) {
 
                 // cannot move down any further
                 if (currInfo.x == 17) {
-                    return;
+                    return anySuccess;
                 }
                 else if (currInfo.isFilled) {
                     // if the cell at position x,y is filled in our block object,
                     // make sure it's not filled in the cell we want to move to.
                     if (board.at(currInfo.x + 1).at(currInfo.y).getInfo().isFilled) {
-                        return;
+                        return anySuccess;
                     }
                 }
             }
+            anySuccess = true;
             ++info.llx;
             for (int j = 0; j < parts.size(); ++j) {
                 parts.at(j).addToX(1);
             }
         }
     }
+    return anySuccess;
 }
 
-void Block::rotate(int i) {
-    if (info.type == 'O') return;
+bool Block::rotate(int i) {
+    bool anySuccess = false;
+    if (info.type == 'O') return anySuccess;
 
     for (int j = 0; j < i; ++j) {
         int offset;
@@ -168,8 +179,13 @@ void Block::rotate(int i) {
         for (int k = 0; k < bufHeight; ++k) {
             for (int m = 0; m < bufWidth; ++m) {                           
                 if (testparts.at(k * bufWidth + m).getInfo().isFilled
-                && board.at(info.llx - bufHeight + 1 + k).at(info.lly - bufWidth + 1 + m + offset).getInfo().isFilled) {
-                    return;
+                && 
+                (info.llx - bufHeight + 1 + k < 0
+                || info.llx - bufHeight + 1 + k >= board.size()
+                || info.lly - bufWidth + 1 + m + offset < 0
+                || info.lly - bufWidth + 1 + m + offset >= board[0].size()
+                || board.at(info.llx - bufHeight + 1 + k).at(info.lly - bufWidth + 1 + m + offset).getInfo().isFilled)) {
+                    return anySuccess;
                 }                                   
 
                 testparts.at(k * bufWidth + m).setX(info.llx - bufHeight + 1 + k);
@@ -184,7 +200,9 @@ void Block::rotate(int i) {
 
         ++rotateCycle;
         rotateCycle %= 4;
+        anySuccess = true;
     }
+    return anySuccess;
 }
 
 int Block::decreaseCells() {

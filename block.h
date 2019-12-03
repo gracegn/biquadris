@@ -17,14 +17,14 @@ class Block: public Subject<blockInfo> {
   std::vector<std::vector<Cell>> board;
   
   int width, height;
-  int remaining = 4;  // ctor will take a value for remaining ie 1
+  int remaining;  // ctor will take a value for remaining ie 1
 
   int rotateCycle = 0;
 
-  void rotate(int i);
+  bool rotate(int i);
  public:
   ~Block();
-  Block(char type, int level, int turn, const std::vector<std::vector<Cell>> &gameBoard);
+  Block(char type, int level, int player, const std::vector<std::vector<Cell>> &gameBoard, int remaining = 4);
 
   static std::map<char, std::vector<std::vector<bool>>> blockSettings;
   
@@ -32,7 +32,7 @@ class Block: public Subject<blockInfo> {
   blockInfo getInfo() const override;
   bool checkOverlap();
   
-  void move(std::string action, int i = 0); // int is repetitions
+  bool move(std::string action, int repeats = 0); // int is repetitions
   int decreaseCells();
 };
 

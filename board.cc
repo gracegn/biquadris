@@ -58,10 +58,37 @@ void Board::move(string action, int repeats) {
         if (numRowsCleared != 0)
             score += pow(level + numRowsCleared, 2);
         score += blocksErasedScore;
+
+        // drop the level 4 center block
+        if (level == 4 && parts.size() != 1) {
+            ++blocksDropped;
+
+            if (numRowsCleared != 0) {
+                blocksDropped = 0;
+            } else if (blocksDropped == 5) {
+                blocksDropped = 0;
+                dropCenterBlock();
+            } 
+        }
+
         endTurn();
     }
     else {
-        currBlock->move(action, repeats);
+        bool success = currBlock->move(action, repeats);
+        if (success) {
+            if (level == 3 || level == 4) currBlock->move("down", 1);
+        }
+        notifyObservers();
+    }
+}
+
+void Board::dropCenterBlock() {
+    delete currBlock;
+    currBlock = new Block{'*', level, player, myBoard, 1};
+    if (currBlock->checkOverlap()) {
+        gameOver = true;
+    } else {
+        move("drop");
         notifyObservers();
     }
 }
@@ -78,10 +105,10 @@ void Board::endTurn() {
     currBlock = new Block{nextBlock, level, player, myBoard};
     if (currBlock->checkOverlap()) {
         gameOver = true;
+    } else {
+        nextBlock = generateNext(level);
+        notifyObservers();
     }
-
-    nextBlock = generateNext(level);
-    notifyObservers();
 }
 
 char Board::generateNext(int level) {
@@ -168,22 +195,24 @@ void Board::setHeavy() {
 }
 void Board::setNextBlock(char newtype) {
     nextBlock = newtype;
+    notifyObservers();
 }
 void Board::setCurrBlock(char newtype) {
     delete currBlock;
     currBlock = new Block{newtype, level, player, myBoard};
+    notifyObservers();
 }
 
 void Board::setNoRand(string file) {
     isRand = false;
     noRandFile = file;
+    noRandOrder.clear();
 
     fstream sequence;
     sequence.open(file);
     char block;
-    
+
     while (sequence >> block) {
-        cout << "adding block: " << block << endl;
         noRandOrder.emplace_back(block);
     }
 }
