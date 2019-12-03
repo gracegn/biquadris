@@ -93,8 +93,10 @@ void Board::move(string action, int repeats) {
         endTurn();
     }
     else {
-        currBlock->move(action, repeats);
-        if (level == 3 || level == 4) currBlock->move("down", 1);
+        bool success = currBlock->move(action, repeats);
+        if (success) {
+            if (level == 3 || level == 4) currBlock->move("down", 1);
+        }
         notifyObservers();
     }
 }

@@ -21,7 +21,7 @@ class Block: public Subject<blockInfo> {
 
   int rotateCycle = 0;
 
-  void rotate(int i);
+  bool rotate(int i);
  public:
   ~Block();
   Block(char type, int level, int player, const std::vector<std::vector<Cell>> &gameBoard, int remaining = 4);
@@ -32,7 +32,7 @@ class Block: public Subject<blockInfo> {
   blockInfo getInfo() const override;
   bool checkOverlap();
   
-  void move(std::string action, int i = 0); // int is repetitions
+  bool move(std::string action, int repeats = 0); // int is repetitions
   int decreaseCells();
 };
 
