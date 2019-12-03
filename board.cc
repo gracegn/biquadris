@@ -33,6 +33,7 @@ Board::Board(int seed, int level, int player, string scriptFile) : player{player
         myBoard.emplace_back(tempvec);
     }
 
+
     // endTurn(); // to set up the first blocks
 }
 
@@ -62,6 +63,7 @@ void Board::move(string action, int repeats) {
         }
         notifyObservers(Action::BlockDrop);
 
+
         int numRowsCleared = 0;
         int blocksErasedScore = 0;
         for (int row = 0; row < 18; ++row) {
@@ -71,12 +73,39 @@ void Board::move(string action, int repeats) {
             }
         }
         // highscore is updated in biquadris
-        cout << "blocksErasedScore=" << blocksErasedScore << endl;
-        score += pow(level + numRowsCleared, 2) + blocksErasedScore;
+        // cout << "blocksErasedScore=" << blocksErasedScore << endl;
+        if (numRowsCleared != 0)
+            score += pow(level + numRowsCleared, 2);
+        score += blocksErasedScore;
+
+        // drop the level 4 center block
+        if (level == 4 && parts.size() != 1) {
+            ++blocksDropped;
+
+            if (numRowsCleared != 0) {
+                blocksDropped = 0;
+            } else if (blocksDropped == 5) {
+                blocksDropped = 0;
+                dropCenterBlock();
+            } 
+        }
+        
         endTurn();
     }
     else {
         currBlock->move(action, repeats);
+        if (level == 3 || level == 4) currBlock->move("down", 1);
+        notifyObservers();
+    }
+}
+
+void Board::dropCenterBlock() {
+    delete currBlock;
+    currBlock = new Block{'*', level, player, myBoard, 1};
+    if (currBlock->checkOverlap()) {
+        gameOver = true;
+    } else {
+        move("drop");
         notifyObservers();
     }
 }
@@ -93,14 +122,10 @@ void Board::endTurn() {
     currBlock = new Block{nextBlock, level, player, myBoard};
     if (currBlock->checkOverlap()) {
         gameOver = true;
+    } else {
+        nextBlock = generateNext(level);
+        notifyObservers();
     }
-
-    // cout << "blockOrder: ";
-    // for (char block : blockOrder)
-    //     cout << block << ' ';
-    // cout << endl;
-    nextBlock = generateNext(level);
-    notifyObservers();
 }
 
 char Board::generateNext(int level) {

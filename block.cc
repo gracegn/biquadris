@@ -14,7 +14,7 @@ map<char,vector<vector<bool>>> Block::blockSettings = {
 // we chose to have the constructor interpret the type of block to create,
 // as having a class for each block type would clutter up the file system
 // while sharing the exact same methods for everything but the constructor.
-Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameBoard) : info{level, type, 3, 0} {    // each cells' parts vector is a vector of cells the size of the
+Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameBoard, int remaining) : remaining{remaining}, info{level, type, 3, 0} {    // each cells' parts vector is a vector of cells the size of the
     // smallest rectangle that encompasses the whole block. For example,
     // a 'Z' block has 6 cells in parts, with height 2 and width 3.
     // Then, parts[0] = parts [0 * height + width] is the top left cell,
@@ -24,6 +24,12 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
     // we have to "add 3" to each row index to accomodate for the 3 extra
     // rows above where the block would be created.
     board = gameBoard;
+
+    // if it's a 1x1 level 4 block, do something special
+    if (remaining == 1) {
+        parts.emplace_back(Cell{3, 5, true, type, this, player});
+        return;
+    }
 
     vector<vector<bool>> setting = blockSettings[type]; //throw exception if invalid type entered
 
@@ -37,14 +43,8 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
             } else {
                 parts.emplace_back(Cell{i + 2, j, false, type, this, player});
             }
-
-            cout << "cell.x = " << i + 2 << "  ";
-            cout << "cell.y = " << j << endl;
         }
     }
-
-    cout << "llx = " << info.llx << "  ";
-    cout << "lly = " << info.lly << endl;
 }
 
 Block::~Block() { }
@@ -64,16 +64,12 @@ bool Block::checkOverlap() {
 
 
 void Block::move(string action, int repeats) {
-    cout << "repeats " << repeats << endl;
-
-    // we repeat the move actions as many time as speicied by repeats
+    // we repeat the move actions as many time as specified by repeats
     if (action == "counterclockwise") {
         repeats %= 4;
         if (repeats != 4) rotate(4 - repeats);
     } else if (action == "clockwise") {
-        cout << "clockwise begin " << repeats << " times" << endl;
         repeats %= 4;
-        cout << "clockwise " << repeats << " times" << endl;
         if (repeats != 4) rotate(repeats);
     }
 
@@ -158,8 +154,6 @@ void Block::rotate(int i) {
         } else {
             offset = rotateCycle % 2 == 1 ? 2 : 1;
         }
-
-        cellInfo cInfo;
 
         // we pretend to rotate, to check if there's space
         vector<Cell> testparts = parts;

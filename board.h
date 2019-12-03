@@ -36,6 +36,8 @@ class Board : public Subject<playerInfo> {
   bool isBlind = false;
   bool gameOver = false;
 
+  int blocksDropped = 0;
+
  public:
   ~Board();
   
@@ -49,6 +51,8 @@ class Board : public Subject<playerInfo> {
   void specialAction();
   void toggleBlind();
   void setHeavy();
+
+  void dropCenterBlock();
   void setNextBlock(char newtype);
   Block* getCurrBlock();
   void setCurrBlock(char newtype);
