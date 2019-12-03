@@ -65,8 +65,6 @@ int main(int argc, char *argv[]) {
             }
             else return 0;
         }
-
-        cout << "I just read " << input << endl;
         
         stringstream sInput;
         sInput << "1" << input;
@@ -152,14 +150,14 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        int isGameOver = game.isGameOver();
+        int isGameOver = game.loserIs();
         if (isGameOver != 0) {
             cout << "G A M E O V E R" << endl;
             cout << "HIGHSCORE: " << game.getHighscore() << endl;
 
-            if (isGameOver == 1) {
+            if (isGameOver == 2) {
                 cout << "WINNER: Player1\t\tLOSER: Player2" << endl;
-            } else if (isGameOver == 2) {
+            } else if (isGameOver == 1) {
                 cout << "LOSER: Player1\t\tWINNER: Player2" << endl;
             }
 

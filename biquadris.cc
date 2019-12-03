@@ -167,7 +167,7 @@ int Biquadris::getHighscore() const {
     return highscore;
 }
 
-int Biquadris::isGameOver() const {
+int Biquadris::loserIs() const {
     if (player1.getInfo().gameOver) {
         return 1;
     } else if (player2.getInfo().gameOver) {
