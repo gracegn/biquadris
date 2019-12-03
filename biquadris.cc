@@ -159,7 +159,7 @@ bool Biquadris::isGameOver() const {
 
 void Biquadris::toggleTurn() {
     if (turn == 1) {
-        turn = 0;
+        turn = 2;
     } else {
         turn = 1;
     }

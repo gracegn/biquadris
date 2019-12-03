@@ -37,14 +37,8 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
             } else {
                 parts.emplace_back(Cell{i + 2, j, false, type, this, player});
             }
-
-            cout << "cell.x = " << i + 2 << "  ";
-            cout << "cell.y = " << j << endl;
         }
     }
-
-    cout << "llx = " << info.llx << "  ";
-    cout << "lly = " << info.lly << endl;
 }
 
 Block::~Block() { }
@@ -64,9 +58,7 @@ bool Block::checkOverlap() {
 
 
 void Block::move(string action, int repeats) {
-    cout << "repeats " << repeats << endl;
-
-    // we repeat the move actions as many time as speicied by repeats
+    // we repeat the move actions as many time as specified by repeats
     if (action == "counterclockwise") {
         repeats %= 4;
         if (repeats != 4) rotate(4 - repeats);
@@ -158,8 +150,6 @@ void Block::rotate(int i) {
         } else {
             offset = rotateCycle % 2 == 1 ? 2 : 1;
         }
-
-        cellInfo cInfo;
 
         // we pretend to rotate, to check if there's space
         vector<Cell> testparts = parts;
