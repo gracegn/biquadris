@@ -55,6 +55,16 @@ void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
     if (!textOnly) gd->updateInfo(player1, player2);
 }
 
+void Biquadris::setRandom() {
+    if (turn == 1) player1.setRand();
+    if (turn == 2) player2.setRand();
+}
+
+void Biquadris::setNoRandom(string file) {
+    if (turn == 1) player1.setNoRand(file);
+    if (turn == 2) player2.setNoRand(file);
+}
+
 void Biquadris::setCurrBlock(char newType) {
     if (turn == 1) player1.setCurrBlock(newType);
     if (turn == 2) player2.setCurrBlock(newType);
@@ -159,7 +169,7 @@ bool Biquadris::isGameOver() const {
 
 void Biquadris::toggleTurn() {
     if (turn == 1) {
-        turn = 0;
+        turn = 2;
     } else {
         turn = 1;
     }

@@ -22,6 +22,10 @@ class Board : public Subject<playerInfo> {
   string sequenceFile;
   vector<char> blockOrder;
 
+  bool isRand = true;
+  string noRandFile;
+  vector<char> noRandOrder;
+
   int width = 11;
   int height = 18;
 
@@ -48,6 +52,8 @@ class Board : public Subject<playerInfo> {
   void setNextBlock(char newtype);
   Block* getCurrBlock();
   void setCurrBlock(char newtype);
+  void setNoRand(string file);
+  void setRand();
 
   bool isRowFull(int rownum) const;
   int clearRow(int rownum);
