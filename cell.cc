@@ -14,6 +14,18 @@ void Cell::setType(char toType) {
     type = toType;
 }
 
+void Cell::setFilled(bool filled) {
+    isFilled = filled;
+}
+
+void Cell::setX(int i) {
+    x = i;
+}
+
+void Cell::setY(int i) {
+    y = i;
+}
+
 void Cell::addToX(int i) {
     x += i;
 }

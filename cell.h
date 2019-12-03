@@ -19,6 +19,10 @@ class Cell: public Subject<cellInfo> {
   cellInfo getInfo() const override;
   Block* getOwner();
   void setType(char toType);
+
+  void setFilled(bool filled);
+  void setX(int i);
+  void setY(int i);
   void addToX(int i);
   void addToY(int i);
   
