@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
     bool readFromFile = false;
 
     while(true) {
+        cin >> input;
 
         // we need to check if we were reading a file or from CLI
         // to know whether to terminate the program or not
@@ -59,12 +60,13 @@ int main(int argc, char *argv[]) {
             if (readFromFile) {
                 cin.rdbuf(cinbuf);
                 file.close();
+                readFromFile = false;
                 continue;
             }
             else return 0;
         }
 
-        cin >> input;
+        cout << "I just read " << input << endl;
         
         stringstream sInput;
         sInput << "1" << input;
