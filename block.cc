@@ -36,9 +36,15 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
                 parts.emplace_back(Cell{i + 2, j, true, type, this, player});
             } else {
                 parts.emplace_back(Cell{i + 2, j, false, type, this, player});
-            } 
+            }
+
+            cout << "cell.x = " << i + 2 << "  ";
+            cout << "cell.y = " << j << endl;
         }
     }
+
+    cout << "llx = " << info.llx << "  ";
+    cout << "lly = " << info.lly << endl;
 }
 
 Block::~Block() { }
@@ -58,8 +64,19 @@ bool Block::checkOverlap() {
 
 
 void Block::move(string action, int repeats) {
+    cout << "repeats " << repeats << endl;
 
     // we repeat the move actions as many time as speicied by repeats
+    if (action == "counterclockwise") {
+        repeats %= 4;
+        if (repeats != 4) rotate(4 - repeats);
+    } else if (action == "clockwise") {
+        cout << "clockwise begin " << repeats << " times" << endl;
+        repeats %= 4;
+        cout << "clockwise " << repeats << " times" << endl;
+        if (repeats != 4) rotate(repeats);
+    }
+
     for (int i = 0; i < repeats; ++i) {
         if (action == "left") {
             for (int j = 0; j < parts.size(); ++j) {
@@ -123,38 +140,60 @@ void Block::move(string action, int repeats) {
             for (int j = 0; j < parts.size(); ++j) {
                 parts.at(j).addToX(1);
             }
-        } else if (action == "counterclockwise") {
-            i %= 4;
-            if (i != 4) rotate(4 - i);
-        } else if (action == "clockwise") {
-            i %= 4;
-            if (i != 4) rotate(i);
         }
     }
 }
 
 void Block::rotate(int i) {
-    cellInfo cInfo;
+    if (info.type == 'O') return;
 
     for (int j = 0; j < i; ++j) {
-        // we pretend to do the thing to check if there are conflicts
-        for (int k = 0; k < parts.size(); ++k) {
-            cInfo = parts.at(k).getInfo();
-            if (!board.at(cInfo.x + info.lly - cInfo.y).at(cInfo.y).getInfo().isFilled
-                || !board.at(cInfo.x).at(cInfo.y + cInfo.x - info.llx - 2).getInfo().isFilled) return;
-        }
-        
-        // we do the thing for real
-        for (int k = 0; k < parts.size(); ++k) {
-            cInfo = parts.at(k).getInfo();
-
-            parts.at(k).addToX(info.lly - cInfo.y);
-            parts.at(k).addToY(cInfo.x - info.llx - 2);
+        int offset;
+        if (info.type == 'I') {
+            if (rotateCycle == 2) {
+                offset = 0;
+            } else {
+                offset = rotateCycle % 2 == 1 ? 3 : 1;
+            }
+        } else {
+            offset = rotateCycle % 2 == 1 ? 2 : 1;
         }
 
-        int buf = width;
-        width = height;
-        height = buf;
+        cellInfo cInfo;
+
+        // we pretend to rotate, to check if there's space
+        vector<Cell> testparts = parts;
+        vector<Cell> bufparts = parts;
+        for (int k = 0; k < width; ++k) {
+            for (int m = 0; m < height; ++m) {    
+                bool filled = testparts.at(k * height + m).getInfo().isFilled;
+                testparts.at(k * height + m).setFilled(bufparts.at(width * (height - m - 1) + k).getInfo().isFilled);
+                bufparts.at(width * (height - m - 1) + k).setFilled(filled);
+            }
+        }
+
+        int bufHeight = width;
+        int bufWidth = height;
+
+        for (int k = 0; k < bufHeight; ++k) {
+            for (int m = 0; m < bufWidth; ++m) {                           
+                if (testparts.at(k * bufWidth + m).getInfo().isFilled
+                && board.at(info.llx - bufHeight + 1 + k).at(info.lly - bufWidth + 1 + m + offset).getInfo().isFilled) {
+                    return;
+                }                                   
+
+                testparts.at(k * bufWidth + m).setX(info.llx - bufHeight + 1 + k);
+                testparts.at(k * bufWidth + m).setY(info.lly - bufWidth + 1 + m + offset);
+            }
+        }
+
+        // checks passed, we assign to the actual parts the rotated parts
+        parts = testparts;
+        height = bufHeight;
+        width = bufWidth;
+
+        ++rotateCycle;
+        rotateCycle %= 4;
     }
 }
 

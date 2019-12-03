@@ -19,6 +19,8 @@ class Block: public Subject<blockInfo> {
   int width, height;
   int remaining = 4;  // ctor will take a value for remaining ie 1
 
+  int rotateCycle = 0;
+
   void rotate(int i);
  public:
   ~Block();
