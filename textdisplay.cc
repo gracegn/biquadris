@@ -16,7 +16,7 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
 }
 
 // unused thus far
-void TextDisplay::notify(Subject<cellInfo> &whoNotified, bool option) {
+void TextDisplay::notify(Subject<cellInfo> &whoNotified, Action type) {
     cout << "td notified in cellinfo" << endl;
     cellInfo info = whoNotified.getInfo();
     if (info.isFilled && info.player == 1) {
@@ -31,9 +31,8 @@ void TextDisplay::notify(Subject<cellInfo> &whoNotified, bool option) {
     }
 }
 
-void TextDisplay::notify(Subject<playerInfo> &whoNotified, bool dropped) {
-    // dropped = false means it's a new block or movement of block
-    if (!dropped) {
+void TextDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
+    if (type == Action::BlockChange) {
         playerInfo info = whoNotified.getInfo();
         if (info.player == 1)
             blockParts1 = whoNotified.getInfo().parts;
@@ -41,8 +40,7 @@ void TextDisplay::notify(Subject<playerInfo> &whoNotified, bool dropped) {
             blockParts2 = whoNotified.getInfo().parts;
     }
     
-    // dropped = true means block was dropped and we're changing display
-    if (dropped) {
+    if (type == Action::BlockDrop) {
         for (cellInfo info : whoNotified.getInfo().parts) {
             if (info.isFilled) {
                 if (info.player == 1)   display1[info.x][info.y] = info.type;
@@ -52,6 +50,16 @@ void TextDisplay::notify(Subject<playerInfo> &whoNotified, bool dropped) {
                 if (info.player == 2)   display2[info.x][info.y] = ' ';
             }
         }
+    }
+
+    if (type == Action::ClearRow) {
+        for (vector<cellInfo> row : whoNotified.getInfo().board) {
+            for (cellInfo info : row) {
+                if (info.player == 1)   display1[info.x][info.y] = info.type;
+                if (info.player == 2)   display2[info.x][info.y] = info.type;
+            }
+        }
+
     }
 }
 

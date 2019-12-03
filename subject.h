@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 
+enum class Action { BlockChange, BlockDrop, ClearRow };
+
 template <typename InfoType> class Observer;
 
 template <typename InfoType> class Subject {
@@ -12,7 +14,7 @@ template <typename InfoType> class Subject {
   //virtual void setInfo(InfoType newInfo) = 0;
  public:
   void attach(Observer<InfoType> *o);  
-  void notifyObservers(bool option = false);
+  void notifyObservers(Action type = Action::BlockChange);
   virtual InfoType getInfo() const = 0;
   virtual ~Subject() = default;
 };
@@ -23,8 +25,8 @@ void Subject<InfoType>::attach(Observer<InfoType> *o) {
 }
 
 template <typename InfoType>
-void Subject<InfoType>::notifyObservers(bool option) {
-  for (auto &ob : observers) ob->notify(*this, option);
+void Subject<InfoType>::notifyObservers(Action type) {
+  for (auto &ob : observers) ob->notify(*this, type);
 }
 
 // template <typename InfoType>
