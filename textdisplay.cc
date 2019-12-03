@@ -45,9 +45,6 @@ void TextDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
             if (info.isFilled) {
                 if (info.player == 1)   display1[info.x][info.y] = info.type;
                 if (info.player == 2)   display2[info.x][info.y] = info.type;
-            } else {
-                if (info.player == 1)   display1[info.x][info.y] = ' ';
-                if (info.player == 2)   display2[info.x][info.y] = ' ';
             }
         }
     }
