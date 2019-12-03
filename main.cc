@@ -89,8 +89,9 @@ int main(int argc, char *argv[]) {
                     // NOT IMPLEMENTED YET I THINK
                 }
                 else if (c == "sequence") {
-                    cin >> input; // reads file name
-                    // how do we read file
+                    // cin >> input; // reads file name
+                    // fstream file{input};
+                    // stream = file;
                 }
                 else if (c == "restart") {
                     game.restartGame();
