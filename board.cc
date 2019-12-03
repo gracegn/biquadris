@@ -93,8 +93,10 @@ void Board::move(string action, int repeats) {
         endTurn();
     }
     else {
-        currBlock->move(action, repeats);
-        if (level == 3 || level == 4) currBlock->move("down", 1);
+        bool success = currBlock->move(action, repeats);
+        if (success) {
+            if (level == 3 || level == 4) currBlock->move("down", 1);
+        }
         notifyObservers();
     }
 }
@@ -220,13 +222,13 @@ void Board::setCurrBlock(char newtype) {
 void Board::setNoRand(string file) {
     isRand = false;
     noRandFile = file;
+    noRandOrder.clear();
 
     fstream sequence;
     sequence.open(file);
     char block;
-    
+
     while (sequence >> block) {
-        cout << "adding block: " << block << endl;
         noRandOrder.emplace_back(block);
     }
 }
