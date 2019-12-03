@@ -64,7 +64,7 @@ bool Block::checkOverlap() {
 
 
 void Block::move(string action, int repeats) {
-    // we repeat the move actions as many time as speicied by repeats
+    // we repeat the move actions as many time as specified by repeats
     if (action == "counterclockwise") {
         repeats %= 4;
         if (repeats != 4) rotate(4 - repeats);

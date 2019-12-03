@@ -33,6 +33,7 @@ Board::Board(int seed, int level, int player, string scriptFile) : player{player
         myBoard.emplace_back(tempvec);
     }
 
+
     // endTurn(); // to set up the first blocks
 }
 
@@ -62,6 +63,7 @@ void Board::move(string action, int repeats) {
         }
         notifyObservers(Action::BlockDrop);
 
+
         int numRowsCleared = 0;
         int blocksErasedScore = 0;
         for (int row = 0; row < 18; ++row) {
@@ -72,7 +74,9 @@ void Board::move(string action, int repeats) {
         }
         // highscore is updated in biquadris
         // cout << "blocksErasedScore=" << blocksErasedScore << endl;
-        score += pow(level + numRowsCleared, 2) + blocksErasedScore;
+        if (numRowsCleared != 0)
+            score += pow(level + numRowsCleared, 2);
+        score += blocksErasedScore;
 
         // drop the level 4 center block
         if (level == 4 && parts.size() != 1) {
@@ -85,7 +89,7 @@ void Board::move(string action, int repeats) {
                 dropCenterBlock();
             } 
         }
-
+        
         endTurn();
     }
     else {

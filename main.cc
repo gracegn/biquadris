@@ -44,10 +44,18 @@ int main(int argc, char *argv[]) {
 
     while (cin >> input) {
         stringstream sInput;
-        sInput << "0" << input;
+        sInput << "1" << input;
         sInput >> repeats;
-        if (repeats == 0) repeats = 1;
 
+        string temp = std::to_string(repeats);
+        if (temp == "1")
+            repeats = 1;
+        else if (temp == "10")
+            repeats = 0;
+        else {
+            repeats = stoi(temp.substr(1));
+        }
+        
         vector<string> buffer(commands);
         char read;
         int i = 0;
