@@ -62,6 +62,7 @@ void Biquadris::setCurrBlock(char newType) {
 
 
 void Biquadris::move(string action, int repeats) {
+    if (repeats == 0) return;
     if (action == "drop") { // for "drop" actions, we want to end the player's turn afterwards
         for (int i = 0; i < repeats; ++i) {
             if (turn == 1) {
