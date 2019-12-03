@@ -54,11 +54,16 @@ void Board::move(string action, int i) {
         // here we "lock" the block to the board.
         vector<Cell> parts = currBlock->getParts();
         for (auto cell : parts) {
-            if (cell.getInfo().isFilled) {
+            cellInfo info = cell.getInfo();
+            if (info.isFilled) {
                 // assign our block's cell to this cell.
-                myBoard.at(cell.getInfo().x).at(cell.getInfo().y) = cell;
+                myBoard.at(info.x).at(info.y) = cell;
             }
         }
+        notifyObservers(true);
+        // for (Cell cell : parts) {
+        //     cout << "(" << cell.getInfo().x << "," << cell.getInfo().y << ")" << endl;
+        // }
 
         int numRowsCleared = 0;
         int blocksErasedScore = 0;

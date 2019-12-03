@@ -12,7 +12,7 @@ template <typename InfoType> class Subject {
   //virtual void setInfo(InfoType newInfo) = 0;
  public:
   void attach(Observer<InfoType> *o);  
-  void notifyObservers();
+  void notifyObservers(bool option = false);
   virtual InfoType getInfo() const = 0;
   virtual ~Subject() = default;
 };
@@ -23,8 +23,8 @@ void Subject<InfoType>::attach(Observer<InfoType> *o) {
 }
 
 template <typename InfoType>
-void Subject<InfoType>::notifyObservers() {
-  for (auto &ob : observers) ob->notify(*this);
+void Subject<InfoType>::notifyObservers(bool option) {
+  for (auto &ob : observers) ob->notify(*this, option);
 }
 
 // template <typename InfoType>

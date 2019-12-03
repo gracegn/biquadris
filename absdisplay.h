@@ -16,8 +16,8 @@ class AbsDisplay: public Observer<cellInfo>, public Observer<playerInfo> {
  public:
   AbsDisplay(int rows, int cols) : rows{rows}, cols{cols} {};
 
-  void notify(Subject<cellInfo> &whoNotified) = 0;
-  void notify(Subject<playerInfo> &whoNotified) = 0;
+  void notify(Subject<cellInfo> &whoNotified, bool option) = 0;
+  void notify(Subject<playerInfo> &whoNotified, bool dropped) = 0;
   // void updateInfo(playerInfo player1, playerInfo player2);
 };
 

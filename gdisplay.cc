@@ -6,10 +6,10 @@ GraphicsDisplay::GraphicsDisplay(playerInfo info1, playerInfo info2, int rows, i
     theGDisplay.fillRectangle(0, 0, 500, 500, Xwindow::White);
 }
 
-void GraphicsDisplay::notify(Subject<cellInfo> &whoNotified) {
+void GraphicsDisplay::notify(Subject<cellInfo> &whoNotified, bool option) {
 
 }
-void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified) {
+void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, bool dropped) {
 
 }
 
