@@ -213,10 +213,12 @@ void Board::setHeavy() {
 }
 void Board::setNextBlock(char newtype) {
     nextBlock = newtype;
+    notifyObservers();
 }
 void Board::setCurrBlock(char newtype) {
     delete currBlock;
     currBlock = new Block{newtype, level, player, myBoard};
+    notifyObservers();
 }
 
 void Board::setNoRand(string file) {
