@@ -17,7 +17,7 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
     player2.attach(td);
 
     if (!textOnly) {
-        gd = new GraphicsDisplay{{start_level, 0, 'E'}, {start_level, 0, 'E'}, rows, cols};
+        gd = new GraphicsDisplay{{start_level, 0, ' '}, {start_level, 0, ' '}, rows, cols};
         player1.attach(gd);
         player2.attach(gd);
     }
@@ -61,18 +61,21 @@ void Biquadris::setCurrBlock(char newType) {
 } 
 
 
-void Biquadris::move(string action, int i) {
+void Biquadris::move(string action, int repeats) {
+    if (repeats == 0) return;
     if (action == "drop") { // for "drop" actions, we want to end the player's turn afterwards
-        if (turn == 1) {
-            player1.move(action);
-            if (highscore < player1.getInfo().score) highscore = player1.getInfo().score;
-        } else {
-            player2.move(action);
-            if (highscore < player2.getInfo().score) highscore = player2.getInfo().score;
+        for (int i = 0; i < repeats; ++i) {
+            if (turn == 1) {
+                player1.move(action);
+                if (highscore < player1.getInfo().score) highscore = player1.getInfo().score;
+            } else {
+                player2.move(action);
+                if (highscore < player2.getInfo().score) highscore = player2.getInfo().score;
+            }
         }
         toggleTurn();
     } else {
-        turn == 1 ? player1.move(action, i) : player2.move(action, i);
+        turn == 1 ? player1.move(action, repeats) : player2.move(action, repeats);
     }
 }
 

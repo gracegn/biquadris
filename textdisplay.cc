@@ -15,8 +15,8 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
     }
 }
 
-// cell notifies of locked???
-void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
+// unused thus far
+void TextDisplay::notify(Subject<cellInfo> &whoNotified, Action type) {
     cout << "td notified in cellinfo" << endl;
     cellInfo info = whoNotified.getInfo();
     if (info.isFilled && info.player == 1) {
@@ -30,13 +30,34 @@ void TextDisplay::notify(Subject<cellInfo> &whoNotified) {
         display2[info.x][info.y] = ' ';
     }
 }
-// board notifies of new piece or movement
-void TextDisplay::notify(Subject<playerInfo> &whoNotified) {
-    playerInfo info = whoNotified.getInfo();
-    if (info.player == 1)
-        blockParts1 = whoNotified.getInfo().parts;
-    if (info.player == 2)
-        blockParts2 = whoNotified.getInfo().parts;
+
+void TextDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
+    if (type == Action::BlockChange) {
+        playerInfo info = whoNotified.getInfo();
+        if (info.player == 1)
+            blockParts1 = whoNotified.getInfo().parts;
+        if (info.player == 2)
+            blockParts2 = whoNotified.getInfo().parts;
+    }
+    
+    if (type == Action::BlockDrop) {
+        for (cellInfo info : whoNotified.getInfo().parts) {
+            if (info.isFilled) {
+                if (info.player == 1)   display1[info.x][info.y] = info.type;
+                if (info.player == 2)   display2[info.x][info.y] = info.type;
+            }
+        }
+    }
+
+    if (type == Action::ClearRow) {
+        for (vector<cellInfo> row : whoNotified.getInfo().board) {
+            for (cellInfo info : row) {
+                if (info.player == 1)   display1[info.x][info.y] = info.type;
+                if (info.player == 2)   display2[info.x][info.y] = info.type;
+            }
+        }
+
+    }
 }
 
 // this is a 'helper' for Biquadris::boardsPrint
@@ -47,6 +68,10 @@ string TextDisplay::rowString(int player, int row, string blind) {
 }
 string TextDisplay::rowStringH(vector<cellInfo> blockParts, vector<vector<char>> display, int row, string blind) {
     string str = "";
+
+    // for (auto info: blockParts) {
+    //     cout << "x=" << info.x << ",y=" << info.y << endl;
+    // }
 
     if (blind == "col") {
         for (int i = 0; i < cols; ++i) {
