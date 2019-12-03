@@ -10,6 +10,8 @@ class Biquadris {
   Board player2;
   TextDisplay *td = nullptr;
   GraphicsDisplay *gd = nullptr;
+  string scriptfile1;
+  string scriptfile2;
   
   int turn = 1;
   int highscore = 0;

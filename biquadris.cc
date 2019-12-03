@@ -6,7 +6,8 @@ Biquadris::~Biquadris() {
     delete gd;
 }
   
-Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols) : player1{Board(newseed, start_level, 1, scriptfile1)}, player2{Board(newseed, start_level, 2, scriptfile2)} {
+Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols)
+: player1{Board(newseed, start_level, 1, scriptfile1)}, player2{Board(newseed, start_level, 2, scriptfile2)}, scriptfile1{scriptfile1}, scriptfile2{scriptfile2} {
     boardHeight = rows;
     boardWidth = cols;
     textOnly = onlyText;
@@ -17,7 +18,7 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
     player2.attach(td);
 
     if (!textOnly) {
-        gd = new GraphicsDisplay{{start_level, 0, ' '}, {start_level, 0, ' '}, rows, cols};
+        gd = new GraphicsDisplay{{1, start_level, 0, ' ', false, false}, {2, start_level, 0, ' ', false, false}, rows, cols};
         player1.attach(gd);
         player2.attach(gd);
     }
@@ -27,18 +28,17 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
 }
 
 void Biquadris::restartGame() {
+    player1 = Board{seed, player1.getInfo().level, 1, scriptfile1};
+    player2 = Board{seed, player2.getInfo().level, 2, scriptfile2};
+
     delete td;
     td = new TextDisplay{boardHeight, boardWidth};
+    player1.attach(td);
+    player2.attach(td);
+
     if (!textOnly) {
         delete gd;
         gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
-    }
-
-    player1 = Board(seed, player1.getInfo().level, 1);
-    player2 = Board(seed, player2.getInfo().level, 2);
-    player1.attach(td);
-    player2.attach(td);
-    if (!textOnly) {
         player1.attach(gd);
         player2.attach(gd);
     }

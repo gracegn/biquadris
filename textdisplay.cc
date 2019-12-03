@@ -56,7 +56,6 @@ void TextDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
                 if (info.player == 2)   display2[info.x][info.y] = info.type;
             }
         }
-
     }
 }
 
