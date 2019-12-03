@@ -71,7 +71,8 @@ void Board::move(string action, int repeats) {
             } 
         }
 
-        endTurn();
+        if (numRowsCleared > 1) endTurn(true);
+        else endTurn();
     }
     else {
         bool success = currBlock->move(action, repeats);
@@ -101,7 +102,7 @@ vector<vector<Cell>>& Board::getBoard() {
 // creates new block from nextBlock and sets it to curr
 // and generates a new nextBlock
 // don't have to return score as biquadris accesses & checks through getInfo()
-void Board::endTurn() {
+void Board::endTurn(bool special) {
     currBlock = new Block{nextBlock, level, player, myBoard};
     if (currBlock->checkOverlap()) {
         gameOver = true;
@@ -109,6 +110,8 @@ void Board::endTurn() {
         nextBlock = generateNext(level);
         notifyObservers();
     }
+
+    if (special) specialAction();
 }
 
 char Board::generateNext(int level) {
@@ -266,13 +269,15 @@ int Board::clearRow(int rownum) {
         newrow.emplace_back(Cell{0, i, false, ' ', nullptr, player});
     myBoard.insert(myBoard.begin(), newrow);
 
-    cout << "notifying observers" << endl;
     notifyObservers(Action::ClearRow);
-    printBoard();
     return blockScore;
 }
 
 Block* Board::getCurrBlock() {return currBlock; }
+
+void Board::setOppBoard(Board* opponentBoard) {
+    oppBoard = opponentBoard;
+}
 
 playerInfo Board::getInfo() const {
     vector<Cell> parts = currBlock->getParts();

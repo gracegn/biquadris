@@ -45,7 +45,7 @@ class Board : public Subject<playerInfo> {
   void levelChange(int change);
   void move(string action, int i = 0);
 
-  void endTurn();
+  void endTurn(bool special = false);
   Block* createBlock();
 
   void specialAction();
@@ -64,6 +64,7 @@ class Board : public Subject<playerInfo> {
 
   char generateNext(int level);
   vector<vector<Cell>> &getBoard();
+  void setOppBoard(Board* opponentBoard);
   
   void printBoard();
   playerInfo getInfo() const;

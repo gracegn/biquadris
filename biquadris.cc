@@ -13,6 +13,9 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
     textOnly = onlyText;
     seed = newseed;
 
+    player1.setOppBoard(&player2);
+    player2.setOppBoard(&player1);
+
     td = new TextDisplay{rows, cols};
     player1.attach(td);
     player2.attach(td);
@@ -22,7 +25,7 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
         player1.attach(gd);
         player2.attach(gd);
     }
-
+    
     player1.endTurn();
     player2.endTurn();
 }
@@ -46,6 +49,8 @@ void Biquadris::restartGame() {
     player1.endTurn();
     player2.endTurn();
     turn = 1;
+
+    boardsPrint();
 }
 
 // when level, score, or 'next' gets updated aka after every turn?
@@ -110,8 +115,10 @@ void Biquadris::boardsPrint() {
     
     for (int i = 0; i < boardHeight; ++i) {
         if (blind1) {
-            if (3 <= i && i <= 12)
+            if (3+2 <= i && i <= 12+2)
                 cout << td->rowString(1, i, "row");
+            else if (i < 3)
+                cout << td->rowString(1, i);
             else
                 cout << td->rowString(1, i, "col");
         }
@@ -122,8 +129,10 @@ void Biquadris::boardsPrint() {
         cout << space;
 
         if (blind2) {
-            if (3 <= i && i <= 12)
+            if (3+2 <= i && i <= 12+2)
                 cout << td->rowString(2, i, "row");
+            else if (i < 3)
+                cout << td->rowString(2, i);
             else
                 cout << td->rowString(2, i, "col");
         }

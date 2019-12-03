@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
                 cout << "LOSER: Player1\t\tWINNER: Player2" << endl;
             }
 
-            return 0;
+            game.restartGame();
         }
     }
 }
