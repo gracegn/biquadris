@@ -195,13 +195,13 @@ void Board::setCurrBlock(char newtype) {
 void Board::setNoRand(string file) {
     isRand = false;
     noRandFile = file;
+    noRandOrder.clear();
 
     fstream sequence;
     sequence.open(file);
     char block;
-    
+
     while (sequence >> block) {
-        cout << "adding block: " << block << endl;
         noRandOrder.emplace_back(block);
     }
 }
