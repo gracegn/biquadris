@@ -28,6 +28,8 @@ class Biquadris {
   void updateDisplays(playerInfo player1, playerInfo player2);
   void move(string action, int repeats = 1);
   void levelChange(int change);
+  void setRandom();
+  void setNoRandom(string file);
   void setCurrBlock(char newType);
   void boardsPrint();
 };

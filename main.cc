@@ -91,10 +91,12 @@ int main(int argc, char *argv[]) {
                     game.levelChange(-repeats);
                 }
                 else if (c == "norandom") {
-                    // NOT IMPLEMENTED YET I THINK
+                    string file;
+                    cin >> file;
+                    game.setNoRandom(file);
                 }
                 else if (c == "random") {
-                    // NOT IMPLEMENTED YET I THINK
+                    game.setRandom();
                 }
                 else if (c == "sequence") {
                     // cin >> input; // reads file name

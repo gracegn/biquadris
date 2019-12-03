@@ -108,7 +108,20 @@ void Board::endTurn() {
 }
 
 char Board::generateNext(int level) {
-    if (level == 0) {
+    if (!isRand) {
+        if (noRandOrder.empty()) {
+            fstream sequence;
+            sequence.open(noRandFile);
+            char block;
+            while (sequence >> block) {
+                noRandOrder.emplace_back(block);
+            }
+        }
+        char block = noRandOrder.front();
+        noRandOrder.erase(noRandOrder.begin());
+        return block;
+    }
+    else if (level == 0) {
         if (blockOrder.empty()) {
             fstream sequence;
             sequence.open(sequenceFile);
@@ -181,6 +194,24 @@ void Board::setNextBlock(char newtype) {
 void Board::setCurrBlock(char newtype) {
     delete currBlock;
     currBlock = new Block{newtype, level, player, myBoard};
+}
+
+void Board::setNoRand(string file) {
+    isRand = false;
+    noRandFile = file;
+
+    fstream sequence;
+    sequence.open(file);
+    char block;
+    
+    while (sequence >> block) {
+        cout << "adding block: " << block << endl;
+        noRandOrder.emplace_back(block);
+    }
+}
+
+void Board::setRand() {
+    isRand = true;
 }
 
 bool Board::isRowFull(int rownum) const {
