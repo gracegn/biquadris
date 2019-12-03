@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include "biquadris.h"
 using namespace std;
@@ -42,7 +43,29 @@ int main(int argc, char *argv[]) {
     string input;
     int repeats;
 
-    while (cin >> input) {
+    // we set buffers so that if we want to use command sequence,
+    // we can switch reading from cin to reading from our file
+    // and back again once it's empty.
+    streambuf *filebuf, *cinbuf;
+    cinbuf = cin.rdbuf();
+    ifstream file;
+    bool readFromFile = false;
+
+    while(true) {
+
+        // we need to check if we were reading a file or from CLI
+        // to know whether to terminate the program or not
+        if (cin.eof()) {
+            if (readFromFile) {
+                cin.rdbuf(cinbuf);
+                file.close();
+                continue;
+            }
+            else return 0;
+        }
+
+        cin >> input;
+        
         stringstream sInput;
         sInput << "1" << input;
         sInput >> repeats;
@@ -99,9 +122,16 @@ int main(int argc, char *argv[]) {
                     game.setRandom();
                 }
                 else if (c == "sequence") {
-                    // cin >> input; // reads file name
-                    // fstream file{input};
-                    // stream = file;
+                    string fileName;
+                    cin >> fileName; // reads file name
+                    file.open(fileName);
+
+                    // assign file's read buffer to filebuf
+                    filebuf = file.rdbuf();
+                    
+                    // cin now reading from file's buffer
+                    cin.rdbuf(filebuf);
+                    readFromFile = true;
                 }
                 else if (c == "restart") {
                     game.restartGame();
