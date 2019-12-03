@@ -11,6 +11,7 @@ struct playerInfo {
   bool gameOver;
   bool isBlind;
   std::vector<cellInfo> parts;
+  std::vector<std::vector<cellInfo>> board;
 };
 
 #endif

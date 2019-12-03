@@ -28,7 +28,7 @@ Board::Board(int seed, int level, int player, string scriptFile) : player{player
     for (int i = 0; i < height; ++i) {
         vector<Cell> tempvec;
         for (int j = 0; j < width; ++j) {
-            tempvec.emplace_back(Cell{i, j, false, 'E', nullptr, player});
+            tempvec.emplace_back(Cell{i, j, false, ' ', nullptr, player});
         }
         myBoard.emplace_back(tempvec);
     }
@@ -54,11 +54,13 @@ void Board::move(string action, int repeats) {
         // here we "lock" the block to the board.
         vector<Cell> parts = currBlock->getParts();
         for (auto cell : parts) {
-            if (cell.getInfo().isFilled) {
+            cellInfo info = cell.getInfo();
+            if (info.isFilled) {
                 // assign our block's cell to this cell.
-                myBoard.at(cell.getInfo().x).at(cell.getInfo().y) = cell;
+                myBoard.at(info.x).at(info.y) = cell;
             }
         }
+        notifyObservers(Action::BlockDrop);
 
         int numRowsCleared = 0;
         int blocksErasedScore = 0;
@@ -69,7 +71,8 @@ void Board::move(string action, int repeats) {
             }
         }
         // highscore is updated in biquadris
-        score += pow(level + numRowsCleared, 2) + blocksErasedScore; 
+        cout << "blocksErasedScore=" << blocksErasedScore << endl;
+        score += pow(level + numRowsCleared, 2) + blocksErasedScore;
         endTurn();
     }
     else {
@@ -97,7 +100,6 @@ void Board::endTurn() {
     //     cout << block << ' ';
     // cout << endl;
     nextBlock = generateNext(level);
-    // cout << "new nextBlock = " << nextBlock << endl << endl;
     notifyObservers();
 }
 
@@ -187,20 +189,29 @@ bool Board::isRowFull(int rownum) const {
 
 // returns score of any blocks erased
 int Board::clearRow(int rownum) {
-    // remove row from cells vector
-    myBoard.erase(myBoard.begin() + rownum);
-
+    // cout << "clearing row " << rownum << endl;
     int blockScore = 0;
-    
-    // edit cell info - decrement each cell's coordinate
-    // call cell's owner block to decrease cells
-    for (int i = rownum; i < myBoard.size(); ++i) {
-        for (Cell cell : myBoard[i]) {
-            cell.addToX(-1);
-            blockScore += cell.getOwner()->decreaseCells();
-        }
-    }
 
+    for (int i = 0; i <= rownum; ++i) {
+        for (int j = 0; j < myBoard.at(i).size(); ++j) {
+            if (i == rownum)
+                blockScore += myBoard.at(i).at(j).getOwner()->decreaseCells();
+            else
+                myBoard.at(i).at(j).addToX(1);
+            }
+    }
+    // cout << "blockScore = " << blockScore << endl;
+
+    // remove row from cells vector and add empty row to top
+    myBoard.erase(myBoard.begin() + rownum);
+    
+    vector<Cell> newrow;
+    for (int i = 0; i < myBoard.at(0).size(); ++i)
+        newrow.emplace_back(Cell{0, i, false, ' ', nullptr, player});
+    myBoard.insert(myBoard.begin(), newrow);
+
+    notifyObservers(Action::ClearRow);
+    
     return blockScore;
 }
 
@@ -212,7 +223,17 @@ playerInfo Board::getInfo() const {
     for (auto cell : parts) {
         partsInfo.emplace_back(cell.getInfo());
     }
-    return {player, level, score, nextBlock, gameOver, isBlind, partsInfo};
+
+    vector<vector<cellInfo>> boardInfo;
+    for(auto row : myBoard) {
+        vector<cellInfo> temprow;
+        for (auto cell : row) {
+            temprow.emplace_back(cell.getInfo());
+        }
+        boardInfo.emplace_back(temprow);
+    }
+
+    return {player, level, score, nextBlock, gameOver, isBlind, partsInfo, boardInfo};
 };
 
 // void Board::notify(Subject<blockInfo> &whoNotified) {

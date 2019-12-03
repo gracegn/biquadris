@@ -17,7 +17,7 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
     player2.attach(td);
 
     if (!textOnly) {
-        gd = new GraphicsDisplay{{start_level, 0, 'E'}, {start_level, 0, 'E'}, rows, cols};
+        gd = new GraphicsDisplay{{start_level, 0, ' '}, {start_level, 0, ' '}, rows, cols};
         player1.attach(gd);
         player2.attach(gd);
     }

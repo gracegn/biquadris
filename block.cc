@@ -160,7 +160,7 @@ void Block::rotate(int i) {
 
 int Block::decreaseCells() {
     --remaining;
-    
+    // cout << info.type << " created in " << info.levelCreated << " has " << remaining << " remaining" << endl;
     if (remaining == 0) return (info.levelCreated + 1) * (info.levelCreated + 1);
     return 0;
 }
