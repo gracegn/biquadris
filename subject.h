@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-enum class Action { BlockChange, BlockDrop, ClearRow };
+enum class Action { BlockChange, BlockDrop, ClearRow, Blind };
 
 template <typename InfoType> class Observer;
 

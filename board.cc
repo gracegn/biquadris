@@ -31,6 +31,9 @@ void Board::levelChange(int change) {
 
 void Board::move(string action, int repeats) {
     if (action == "drop") {
+        //if blind, remove it
+        if (oppBoard->getInfo().isBlind) oppBoard->toggleBlind();
+
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);
 
@@ -180,10 +183,13 @@ void Board::specialAction() {
     cout << "What special action (blind, heavy, force) would you like to select?" << endl;
     string s;
     cin >> s;
-    if (s == "blind" || s == "Blind" || s == "BLIND" || s == "b" || s == "B")
+    if (s == "blind" || s == "Blind" || s == "BLIND" || s == "b" || s == "B") {
         oppBoard->toggleBlind();
-    else if (s == "heavy" || s == "Heavy" || s == "HEAVY" || s == "h" || s == "H")
+        notifyObservers(Action::Blind);
+    }
+    else if (s == "heavy" || s == "Heavy" || s == "HEAVY" || s == "h" || s == "H") {
         oppBoard->setHeavy();
+    }
     else if (s == "force" || s == "Force" || s == "FORCE" || s == "f" || s == "F") {
         char c;
         cin >> c;

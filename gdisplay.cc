@@ -144,8 +144,7 @@ void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
     playerInfo info = whoNotified.getInfo();
 
     if (type == Action::BlockChange) {
-        // draw bbb
-        if (info.isBlind) info.player == 1 ? drawBlind(gdP1) : drawBlind(gdP2);
+        cout << "BLOCKCHANGE" << endl;
     
         if (info.player == 1 ? !justDropped1 : !justDropped2) {
             drawCoverBlock((info.player == 1 ? info1 : info2));
@@ -157,8 +156,13 @@ void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
         drawBlock(info);
         drawNextBlock(info);
     } else if (type == Action::BlockDrop) {
-        if ((info.player == 1 && info1.isBlind) || (info.player == 2 && info2.isBlind)) {
+        cout << "BLOCKDROP" << endl;
+        cout << "INFO BLIND = " << info.isBlind << endl;
+        cout << "INFO1 BLIND = " << info1.isBlind << endl;
+        cout << "INFO2 BLIND = " << info2.isBlind << endl;
+        if ((info.player == 1 && info2.isBlind) || (info.player == 2 && info1.isBlind)) {
             // redraw everything under bbb or juST REDRAW EVERYTHING
+            cout << "fuck" << endl;
             for (vector<cellInfo> row : info.board) {
                 for (cellInfo cInfo : row) {
                     if (cInfo.isFilled) {
@@ -176,6 +180,7 @@ void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
         info.player == 1 ? justDropped1 = true : justDropped2 = true;
     } else if (type == Action::ClearRow) {
         // redraw everything
+        cout << "CLEARROW" << endl;
         for (vector<cellInfo> row : info.board) {
             for (cellInfo cInfo : row) {
                 if (cInfo.isFilled) {
@@ -185,6 +190,10 @@ void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
                 }
             }
         }
+    } else if (type == Action::Blind) {
+        cout << "BLIND" << endl;
+        // draw bbb
+        info.player == 1 ? drawBlind(gdP1) : drawBlind(gdP2);
     }
 
     updateInfo(info);
