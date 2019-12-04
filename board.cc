@@ -32,7 +32,7 @@ void Board::levelChange(int change) {
 void Board::move(string action, int repeats) {
     if (action == "drop") {
         //if blind, remove it
-        if (oppBoard->getInfo().isBlind) oppBoard->toggleBlind();
+        if (isBlind) toggleBlind();
 
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);

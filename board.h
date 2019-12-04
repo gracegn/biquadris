@@ -13,7 +13,7 @@ class Block;
 
 class Board : public Subject<playerInfo> {
   vector<vector<Cell>> myBoard;
-  Board* oppBoard;
+  Board* oppBoard = nullptr;
   int score = 0;
   int player;
   int level;
