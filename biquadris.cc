@@ -16,14 +16,14 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
     player1.attach(td);
     player2.attach(td);
 
+    player1.endTurn();
+    player2.endTurn();
+
     if (!textOnly) {
-        gd = new GraphicsDisplay{{start_level, 0, ' '}, {start_level, 0, ' '}, rows, cols};
+        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), rows, cols, player1.getCurrBlock()->blockSettings};
         player1.attach(gd);
         player2.attach(gd);
     }
-
-    player1.endTurn();
-    player2.endTurn();
 }
 
 void Biquadris::restartGame() {
@@ -31,7 +31,7 @@ void Biquadris::restartGame() {
     td = new TextDisplay{boardHeight, boardWidth};
     if (!textOnly) {
         delete gd;
-        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
+        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth, player1.getCurrBlock()->blockSettings};
     }
 
     player1 = Board(seed, player1.getInfo().level, 1);
