@@ -23,7 +23,7 @@ class Block {
 
   bool rotate(int i);
  public:
-  ~Block();
+  // ~Block();
   Block(char type, int level, int player, const std::vector<std::vector<Cell>> &gameBoard, int remaining = 4);
 
   static std::map<char, std::vector<std::vector<bool>>> blockSettings;
