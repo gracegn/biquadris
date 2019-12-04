@@ -15,7 +15,6 @@ class TextDisplay: public AbsDisplay {
  public:
   TextDisplay(int rows, int cols);
 
-  void notify(Subject<cellInfo> &whoNotified, Action type) override;
   void notify(Subject<playerInfo> &whoNotified, Action type) override;
   void print(int player = 0);  // player = the one we add blind to, 0 means neither
   std::string rowString(int player, int row, std::string blind = "");

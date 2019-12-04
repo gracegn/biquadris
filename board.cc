@@ -310,21 +310,13 @@ void Board::printBoard() {
 
 Board::~Board() {
     delete currBlock;
-    // printBoard();
     for (int i = 0; i < myBoard.size(); ++i) {
         for (int j = 0; j < myBoard.at(i).size(); ++j) {
             Cell* curr = &myBoard.at(i).at(j);
             if (curr->getInfo().isFilled){
-                // curr->setType(' '); // just for debugging
                 if (curr->getOwner()->decreaseCells() != 0) //score
                     delete curr->getOwner();
             }
         }
     }
-
-    // printBoard();
 }
-
-// void Board::notify(Subject<blockInfo> &whoNotified) {
-
-// }

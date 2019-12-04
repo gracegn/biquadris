@@ -10,7 +10,7 @@
 
 class Cell;
 
-class Block: public Subject<blockInfo> {
+class Block {
   std::vector<Cell> parts;
   blockInfo info;
 
@@ -29,7 +29,7 @@ class Block: public Subject<blockInfo> {
   static std::map<char, std::vector<std::vector<bool>>> blockSettings;
   
   const std::vector<Cell> &getParts();
-  blockInfo getInfo() const override;
+  blockInfo getInfo() const;
   bool checkOverlap();
   
   bool move(std::string action, int repeats = 0); // int is repetitions

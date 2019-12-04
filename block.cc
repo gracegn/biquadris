@@ -31,7 +31,7 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
         return;
     }
 
-    vector<vector<bool>> setting = blockSettings[type]; //throw exception if invalid type entered
+    vector<vector<bool>> setting = blockSettings[type];
 
     height = setting.size();
     width = setting.at(0).size();
@@ -47,7 +47,7 @@ Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameB
     }
 }
 
-Block::~Block() { }
+// Block::~Block() { }
 
 const vector<Cell> &Block::getParts() {
     return parts;
