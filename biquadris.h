@@ -29,7 +29,6 @@ class Biquadris {
 
   int loserIs() const;
   void restartGame();
-  void updateDisplays(playerInfo player1, playerInfo player2);
   void move(string action, int repeats = 1);
   void levelChange(int change);
   void setRandom();

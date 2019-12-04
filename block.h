@@ -10,7 +10,7 @@
 
 class Cell;
 
-class Block: public Subject<blockInfo> {
+class Block {
   std::vector<Cell> parts;
   blockInfo info;
 
@@ -23,13 +23,13 @@ class Block: public Subject<blockInfo> {
 
   bool rotate(int i);
  public:
-  ~Block();
+  // ~Block();
   Block(char type, int level, int player, const std::vector<std::vector<Cell>> &gameBoard, int remaining = 4);
 
   static std::map<char, std::vector<std::vector<bool>>> blockSettings;
   
   const std::vector<Cell> &getParts();
-  blockInfo getInfo() const override;
+  blockInfo getInfo() const;
   bool checkOverlap();
   
   bool move(std::string action, int repeats = 0); // int is repetitions

@@ -45,7 +45,6 @@ class GraphicsDisplay: public AbsDisplay {
 
   void updateInfo(playerInfo info); // when level and scores change!!!
   void updateInfo(playerInfo player1, playerInfo player2);
-  void notify(Subject<cellInfo> &whoNotified, Action type) override; // when next types change!!!
   void notify(Subject<playerInfo> &whoNotified, Action type) override;
   void addBlind(int player);
   void unBlind(std::vector<std::vector<Cell>>);  // the passed in cells are the ones we add back to the graphic display

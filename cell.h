@@ -6,7 +6,7 @@
 
 class Block;
 
-class Cell: public Subject<cellInfo> {
+class Cell {
   int x, y;
   bool isFilled;
   char type;
@@ -16,7 +16,7 @@ class Cell: public Subject<cellInfo> {
  public:
   Cell(int x, int y, bool isFilled, char type, Block* owner, int player);
 
-  cellInfo getInfo() const override;
+  cellInfo getInfo() const;
   Block* getOwner();
   void setType(char toType);
 

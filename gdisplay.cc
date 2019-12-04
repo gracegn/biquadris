@@ -137,9 +137,6 @@ void GraphicsDisplay::drawBlind(Xwindow &gd) {
     gd.fillRectangle(ratio * 2, ratio * 3, ratio * 7, ratio * 15, Xwindow::Brown); //cols 3-9
 }
 
-void GraphicsDisplay::notify(Subject<cellInfo> &whoNotified, Action type) {
-    //unused
-}
 void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
     playerInfo info = whoNotified.getInfo();
 

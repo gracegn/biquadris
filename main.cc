@@ -92,10 +92,6 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            // for (string com : buffer)
-            //         cout << com << " ";
-            //     cout << endl << endl;
-
             if (buffer.size() == 1) {
                 string c = buffer[0];
                 // case town

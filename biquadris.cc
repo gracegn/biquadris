@@ -54,13 +54,6 @@ void Biquadris::restartGame() {
     boardsPrint();
 }
 
-// when level, score, or 'next' gets updated aka after every turn?
-// DEAL WITH THIS LATER!!!!!! THIS ISN'T EVEN GETTING CALLED RN
-void Biquadris::updateDisplays(playerInfo player1, playerInfo player2) {
-    // td->updateInfo(player1, player2); idk if this is even necessary anymore bc text is updated here
-    if (!textOnly) gd->updateInfo(player1, player2);
-}
-
 void Biquadris::setRandom() {
     if (turn == 1) player1.setRand();
     if (turn == 2) player2.setRand();
@@ -169,8 +162,6 @@ void Biquadris::boardsPrint() {
 
         cout << endl;
     }
-
-    //cout << player1.getInfo().nextBlock << space << "\t" << player2.getInfo().nextBlock << endl;
 }
 
 int Biquadris::getHighscore() const {

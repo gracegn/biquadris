@@ -15,21 +15,6 @@ TextDisplay::TextDisplay(int rows, int cols) : AbsDisplay{rows, cols} {
     }
 }
 
-// unused thus far
-void TextDisplay::notify(Subject<cellInfo> &whoNotified, Action type) {
-    cout << "td notified in cellinfo" << endl;
-    cellInfo info = whoNotified.getInfo();
-    if (info.isFilled && info.player == 1) {
-        display1[info.x][info.y] = info.type;
-    } else {
-        display1[info.x][info.y] = ' ';
-    }
-    if (info.isFilled && info.player == 2) {
-        display2[info.x][info.y] = info.type;
-    } else {
-        display2[info.x][info.y] = ' ';
-    }
-}
 
 void TextDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
     if (type == Action::BlockChange) {
