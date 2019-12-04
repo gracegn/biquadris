@@ -137,16 +137,10 @@ void GraphicsDisplay::drawBlind(Xwindow &gd) {
     gd.fillRectangle(ratio * 2, ratio * 3, ratio * 7, ratio * 15, Xwindow::Brown); //cols 3-9
 }
 
-void GraphicsDisplay::notify(Subject<cellInfo> &whoNotified, Action type) {
-    //unused
-}
 void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
     playerInfo info = whoNotified.getInfo();
 
     if (type == Action::BlockChange) {
-        // draw bbb
-        if (info.isBlind) info.player == 1 ? drawBlind(gdP1) : drawBlind(gdP2);
-    
         if (info.player == 1 ? !justDropped1 : !justDropped2) {
             drawCoverBlock((info.player == 1 ? info1 : info2));
         }
@@ -157,7 +151,7 @@ void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
         drawBlock(info);
         drawNextBlock(info);
     } else if (type == Action::BlockDrop) {
-        if ((info.player == 1 && info1.isBlind) || (info.player == 2 && info2.isBlind)) {
+        if ((info.player == 1 && info2.isBlind) || (info.player == 2 && info1.isBlind)) {
             // redraw everything under bbb or juST REDRAW EVERYTHING
             for (vector<cellInfo> row : info.board) {
                 for (cellInfo cInfo : row) {
@@ -185,6 +179,9 @@ void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
                 }
             }
         }
+    } else if (type == Action::Blind) {
+        // draw bbb
+        info.player == 1 ? drawBlind(gdP1) : drawBlind(gdP2);
     }
 
     updateInfo(info);

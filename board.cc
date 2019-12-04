@@ -34,6 +34,9 @@ bool Board::move(string action, int repeats) {
     bool shouldDrop = false;
 
     if (action == "drop") {
+        //if blind, remove it
+        if (isBlind) toggleBlind();
+
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);
 
@@ -194,10 +197,13 @@ void Board::specialAction() {
     cout << "What special action (blind, heavy, force) would you like to select?" << endl;
     string s;
     cin >> s;
-    if (s == "blind" || s == "Blind" || s == "BLIND" || s == "b" || s == "B")
+    if (s == "blind" || s == "Blind" || s == "BLIND" || s == "b" || s == "B") {
         oppBoard->toggleBlind();
-    else if (s == "heavy" || s == "Heavy" || s == "HEAVY" || s == "h" || s == "H")
+        notifyObservers(Action::Blind);
+    }
+    else if (s == "heavy" || s == "Heavy" || s == "HEAVY" || s == "h" || s == "H") {
         oppBoard->setHeavy();
+    }
     else if (s == "force" || s == "Force" || s == "FORCE" || s == "f" || s == "F") {
         char c;
         cin >> c;
@@ -324,21 +330,13 @@ void Board::printBoard() {
 
 Board::~Board() {
     delete currBlock;
-    // printBoard();
     for (int i = 0; i < myBoard.size(); ++i) {
         for (int j = 0; j < myBoard.at(i).size(); ++j) {
             Cell* curr = &myBoard.at(i).at(j);
             if (curr->getInfo().isFilled){
-                // curr->setType(' '); // just for debugging
                 if (curr->getOwner()->decreaseCells() != 0) //score
                     delete curr->getOwner();
             }
         }
     }
-
-    // printBoard();
 }
-
-// void Board::notify(Subject<blockInfo> &whoNotified) {
-
-// }
