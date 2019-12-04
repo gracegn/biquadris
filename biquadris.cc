@@ -44,7 +44,7 @@ void Biquadris::restartGame() {
 
     if (!textOnly) {
         delete gd;
-        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
+        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth, player1.getCurrBlock()->blockSettings};
         player1.attach(gd);
         player2.attach(gd);
     }
