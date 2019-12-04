@@ -14,7 +14,7 @@ map<char,vector<vector<bool>>> Block::blockSettings = {
 // we chose to have the constructor interpret the type of block to create,
 // as having a class for each block type would clutter up the file system
 // while sharing the exact same methods for everything but the constructor.
-Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameBoard, int remaining) : remaining{remaining}, info{level, type, 3, 0} {    // each cells' parts vector is a vector of cells the size of the
+Block::Block(char type, int level, int player, const vector<vector<Cell>> &gameBoard, int remaining) : info{level, type, 3, 0}, remaining{remaining} {    // each cells' parts vector is a vector of cells the size of the
     // smallest rectangle that encompasses the whole block. For example,
     // a 'Z' block has 6 cells in parts, with height 2 and width 3.
     // Then, parts[0] = parts [0 * height + width] is the top left cell,
@@ -207,7 +207,7 @@ bool Block::rotate(int i) {
 
 int Block::decreaseCells() {
     --remaining;
-    // cout << info.type << " created in " << info.levelCreated << " has " << remaining << " remaining" << endl;
+
     if (remaining == 0) return (info.levelCreated + 1) * (info.levelCreated + 1);
     return 0;
 }

@@ -29,7 +29,7 @@ class Board : public Subject<playerInfo> {
   int width = 11;
   int height = 18;
 
-  Block* currBlock;
+  Block* currBlock = nullptr;
   char nextBlock;
   
   bool isHeavy; // from opponent's special action
@@ -45,7 +45,7 @@ class Board : public Subject<playerInfo> {
   void levelChange(int change);
   void move(string action, int i = 0);
 
-  void endTurn();
+  void endTurn(bool special = false);
   Block* createBlock();
 
   void specialAction();
@@ -64,10 +64,10 @@ class Board : public Subject<playerInfo> {
 
   char generateNext(int level);
   vector<vector<Cell>> &getBoard();
+  void setOppBoard(Board* opponentBoard);
   
+  void printBoard();
   playerInfo getInfo() const;
-
-  // void notify(Subject<blockInfo> &whoNotified) override;
 };
 
 #endif

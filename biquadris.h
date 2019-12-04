@@ -10,6 +10,8 @@ class Biquadris {
   Board player2;
   TextDisplay *td = nullptr;
   GraphicsDisplay *gd = nullptr;
+  string scriptfile1;
+  string scriptfile2;
   
   int turn = 1;
   int highscore = 0;
@@ -25,7 +27,7 @@ class Biquadris {
 
   int getHighscore() const;
 
-  int isGameOver() const;
+  int loserIs() const;
   void restartGame();
   void updateDisplays(playerInfo player1, playerInfo player2);
   void move(string action, int repeats = 1);

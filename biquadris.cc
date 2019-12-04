@@ -6,11 +6,15 @@ Biquadris::~Biquadris() {
     delete gd;
 }
   
-Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols) : player1{Board(newseed, start_level, 1, scriptfile1)}, player2{Board(newseed, start_level, 2, scriptfile2)} {
+Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptfile1, string scriptfile2, int rows, int cols)
+: player1{Board(newseed, start_level, 1, scriptfile1)}, player2{Board(newseed, start_level, 2, scriptfile2)}, scriptfile1{scriptfile1}, scriptfile2{scriptfile2} {
     boardHeight = rows;
     boardWidth = cols;
     textOnly = onlyText;
     seed = newseed;
+
+    player1.setOppBoard(&player2);
+    player2.setOppBoard(&player1);
 
     td = new TextDisplay{rows, cols};
     player1.attach(td);
@@ -27,25 +31,27 @@ Biquadris::Biquadris(int start_level, int newseed, bool onlyText, string scriptf
 }
 
 void Biquadris::restartGame() {
+    player1 = Board{seed, player1.getInfo().level, 1, scriptfile1};
+    player2 = Board{seed, player2.getInfo().level, 2, scriptfile2};
+
     delete td;
     td = new TextDisplay{boardHeight, boardWidth};
-    if (!textOnly) {
-        delete gd;
-        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth, player1.getCurrBlock()->blockSettings};
-    }
-
-    player1 = Board(seed, player1.getInfo().level, 1);
-    player2 = Board(seed, player2.getInfo().level, 2);
     player1.attach(td);
     player2.attach(td);
+
+    player1.endTurn();
+    player2.endTurn();
+
     if (!textOnly) {
+        delete gd;
+        gd = new GraphicsDisplay{player1.getInfo(), player2.getInfo(), boardHeight, boardWidth};
         player1.attach(gd);
         player2.attach(gd);
     }
 
-    player1.endTurn();
-    player2.endTurn();
     turn = 1;
+
+    boardsPrint();
 }
 
 // when level, score, or 'next' gets updated aka after every turn?
@@ -110,8 +116,10 @@ void Biquadris::boardsPrint() {
     
     for (int i = 0; i < boardHeight; ++i) {
         if (blind1) {
-            if (3 <= i && i <= 12)
+            if (3+2 <= i && i <= 12+2)
                 cout << td->rowString(1, i, "row");
+            else if (i < 3)
+                cout << td->rowString(1, i);
             else
                 cout << td->rowString(1, i, "col");
         }
@@ -122,8 +130,10 @@ void Biquadris::boardsPrint() {
         cout << space;
 
         if (blind2) {
-            if (3 <= i && i <= 12)
+            if (3+2 <= i && i <= 12+2)
                 cout << td->rowString(2, i, "row");
+            else if (i < 3)
+                cout << td->rowString(2, i);
             else
                 cout << td->rowString(2, i, "col");
         }
@@ -167,7 +177,7 @@ int Biquadris::getHighscore() const {
     return highscore;
 }
 
-int Biquadris::isGameOver() const {
+int Biquadris::loserIs() const {
     if (player1.getInfo().gameOver) {
         return 1;
     } else if (player2.getInfo().gameOver) {

@@ -56,7 +56,6 @@ void TextDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
                 if (info.player == 2)   display2[info.x][info.y] = info.type;
             }
         }
-
     }
 }
 
@@ -75,7 +74,7 @@ string TextDisplay::rowStringH(vector<cellInfo> blockParts, vector<vector<char>>
 
     if (blind == "col") {
         for (int i = 0; i < cols; ++i) {
-            if (3 <= i && i <= 9)
+            if (2 <= i && i <= 8)
                 str += "?";
             else {
                 bool currBlockOn = false;

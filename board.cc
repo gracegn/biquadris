@@ -9,21 +9,10 @@
 #include "cell.h"
 using namespace std;
 
-Board::Board(int seed, int level, int player, string scriptFile) : player{player}, level{level} {
+Board::Board(int seed, int level, int player, string scriptFile) : player{player}, level{level}, sequenceFile{scriptFile} {
     srand(seed); // i have no idea where this is supposed to go, hopefully here lol
-    if (scriptFile != "") sequenceFile = scriptFile;
 
-    if (level == 0) {
-        fstream sequence;
-        sequence.open(sequenceFile);
-        char block;
-        while (sequence >> block) {
-            blockOrder.emplace_back(block);
-        }
-    }
-
-    nextBlock = blockOrder.at(0);
-    blockOrder.erase(blockOrder.begin());
+    nextBlock = generateNext(level);
 
     for (int i = 0; i < height; ++i) {
         vector<Cell> tempvec;
@@ -32,13 +21,6 @@ Board::Board(int seed, int level, int player, string scriptFile) : player{player
         }
         myBoard.emplace_back(tempvec);
     }
-
-
-    // endTurn(); // to set up the first blocks
-}
-
-Board::~Board() {
-    delete currBlock;
 }
 
 void Board::levelChange(int change) {
@@ -73,7 +55,6 @@ void Board::move(string action, int repeats) {
             }
         }
         // highscore is updated in biquadris
-        // cout << "blocksErasedScore=" << blocksErasedScore << endl;
         if (numRowsCleared != 0)
             score += pow(level + numRowsCleared, 2);
         score += blocksErasedScore;
@@ -90,7 +71,8 @@ void Board::move(string action, int repeats) {
             } 
         }
 
-        endTurn();
+        if (numRowsCleared > 1) endTurn(true);
+        else endTurn();
     }
     else {
         bool success = currBlock->move(action, repeats);
@@ -120,7 +102,7 @@ vector<vector<Cell>>& Board::getBoard() {
 // creates new block from nextBlock and sets it to curr
 // and generates a new nextBlock
 // don't have to return score as biquadris accesses & checks through getInfo()
-void Board::endTurn() {
+void Board::endTurn(bool special) {
     currBlock = new Block{nextBlock, level, player, myBoard};
     if (currBlock->checkOverlap()) {
         gameOver = true;
@@ -128,6 +110,8 @@ void Board::endTurn() {
         nextBlock = generateNext(level);
         notifyObservers();
     }
+
+    if (special) specialAction();
 }
 
 char Board::generateNext(int level) {
@@ -158,6 +142,7 @@ char Board::generateNext(int level) {
         return block;
     }
     else if (level == 1) {
+        cout << "in level 1" << endl;
         int type = (rand() % 12);
         if (type == 0) return 'S';
         if (type == 1) return 'Z';
@@ -213,10 +198,12 @@ void Board::setHeavy() {
 }
 void Board::setNextBlock(char newtype) {
     nextBlock = newtype;
+    notifyObservers();
 }
 void Board::setCurrBlock(char newtype) {
     delete currBlock;
     currBlock = new Block{newtype, level, player, myBoard};
+    notifyObservers();
 }
 
 void Board::setNoRand(string file) {
@@ -252,11 +239,25 @@ int Board::clearRow(int rownum) {
 
     for (int i = 0; i <= rownum; ++i) {
         for (int j = 0; j < myBoard.at(i).size(); ++j) {
-            if (i == rownum)
-                blockScore += myBoard.at(i).at(j).getOwner()->decreaseCells();
-            else
-                myBoard.at(i).at(j).addToX(1);
+            Cell* curr = &myBoard.at(i).at(j);
+            // if (i == rownum && curr->getInfo().isFilled) {
+            if (i == rownum && curr->getInfo().type != ' ') {
+                // cout << "row=" << i << ", cell=" << j << endl;
+                Block* owner = curr->getOwner();
+                // cout << "got owner" << endl;
+                int incScore = owner->decreaseCells();
+                // cout << "incScore " << incScore << endl;
+                if (incScore != 0) {
+                    // cout << "about to delete" << endl;
+                    delete curr->getOwner();
+                    // cout << "done deleting" << endl;
+                    blockScore += incScore;
+                }
             }
+            else {
+                curr->addToX(1);
+            }
+        }
     }
     // cout << "blockScore = " << blockScore << endl;
 
@@ -269,11 +270,14 @@ int Board::clearRow(int rownum) {
     myBoard.insert(myBoard.begin(), newrow);
 
     notifyObservers(Action::ClearRow);
-    
     return blockScore;
 }
 
 Block* Board::getCurrBlock() {return currBlock; }
+
+void Board::setOppBoard(Board* opponentBoard) {
+    oppBoard = opponentBoard;
+}
 
 playerInfo Board::getInfo() const {
     vector<Cell> parts = currBlock->getParts();
@@ -293,6 +297,33 @@ playerInfo Board::getInfo() const {
 
     return {player, level, score, nextBlock, gameOver, isBlind, partsInfo, boardInfo};
 };
+
+void Board::printBoard() {
+    for (int i = 0; i < myBoard.size(); ++i) {
+        for (int j = 0; j < myBoard.at(i).size(); ++j) {
+            cout << myBoard.at(i).at(j).getInfo().type;
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+Board::~Board() {
+    delete currBlock;
+    // printBoard();
+    for (int i = 0; i < myBoard.size(); ++i) {
+        for (int j = 0; j < myBoard.at(i).size(); ++j) {
+            Cell* curr = &myBoard.at(i).at(j);
+            if (curr->getInfo().isFilled){
+                // curr->setType(' '); // just for debugging
+                if (curr->getOwner()->decreaseCells() != 0) //score
+                    delete curr->getOwner();
+            }
+        }
+    }
+
+    // printBoard();
+}
 
 // void Board::notify(Subject<blockInfo> &whoNotified) {
 
