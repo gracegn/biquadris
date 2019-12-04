@@ -29,7 +29,10 @@ void Board::levelChange(int change) {
     if (level > 4) level = 4;
 }
 
-void Board::move(string action, int repeats) {
+bool Board::move(string action, int repeats) {
+    // only for "heavy" debuff
+    bool shouldDrop = false;
+
     if (action == "drop") {
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);
@@ -78,9 +81,20 @@ void Board::move(string action, int repeats) {
         bool success = currBlock->move(action, repeats);
         if (success) {
             if (level == 3 || level == 4) currBlock->move("down", 1);
+            if (isHeavy && (action == "right" || action == "left")) {
+                // we move downwards twice, but are particularly interested if the second
+                // move registers. If it doesn't, we drop.
+                currBlock->move("down", 1);
+                bool canMove = currBlock->move("down", 1);
+                if (!canMove) {
+                    // tell board to drop
+                    shouldDrop = true;
+                }
+            }
         }
         notifyObservers();
     }
+    return shouldDrop;
 }
 
 void Board::dropCenterBlock() {

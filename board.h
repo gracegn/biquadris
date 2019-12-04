@@ -32,7 +32,7 @@ class Board : public Subject<playerInfo> {
   Block* currBlock = nullptr;
   char nextBlock;
   
-  bool isHeavy; // from opponent's special action
+  bool isHeavy = false; // from opponent's special action
   bool isBlind = false;
   bool gameOver = false;
 
@@ -43,7 +43,7 @@ class Board : public Subject<playerInfo> {
   
   Board(int seed, int level, int player, string scriptfile = "");
   void levelChange(int change);
-  void move(string action, int i = 0);
+  bool move(string action, int i = 0);
 
   void endTurn(bool special = false);
   Block* createBlock();

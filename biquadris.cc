@@ -79,6 +79,10 @@ void Biquadris::setCurrBlock(char newType) {
 
 void Biquadris::move(string action, int repeats) {
     if (repeats == 0) return;
+
+    // for when heavy debuff is on
+    bool forceDrop = false;
+
     if (action == "drop") { // for "drop" actions, we want to end the player's turn afterwards
         for (int i = 0; i < repeats; ++i) {
             if (turn == 1) {
@@ -91,7 +95,22 @@ void Biquadris::move(string action, int repeats) {
         }
         toggleTurn();
     } else {
-        turn == 1 ? player1.move(action, repeats) : player2.move(action, repeats);
+        if (turn == 1) {
+            forceDrop = player1.move(action, repeats);
+            if (forceDrop) {
+                player1.move("drop");
+                toggleTurn();
+            }
+            forceDrop = false;
+        }
+        else {
+            forceDrop = player2.move(action, repeats);
+            if (forceDrop) {
+                player2.move("drop");
+                toggleTurn();
+            }
+            forceDrop = false;
+        }
     }
 }
 
