@@ -103,7 +103,7 @@ bool Block::move(string action, int repeats) {
                     cellInfo currInfo = parts.at(j).getInfo();
 
                     // cannot move right any further
-                    if (currInfo.y == 10) {
+                    if (currInfo.isFilled && currInfo.y == 10) {
                         return anySuccess;
                     }
                     else if (currInfo.isFilled) {
