@@ -35,7 +35,10 @@ bool Board::move(string action, int repeats) {
 
     if (action == "drop") {
         //if blind, remove it
-        if (isBlind) toggleBlind();
+        if (isBlind) {
+            toggleBlind();
+            notifyObservers(Action::RemoveBlind);
+        }
 
         //drop is special, since we actually make permanent changes to the board.
         currBlock->move("down", 15);

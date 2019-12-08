@@ -3,7 +3,7 @@
 
 using namespace std;
 
-GraphicsDisplay::GraphicsDisplay(playerInfo info1, playerInfo info2, int rows, int cols, map<char, vector<vector<bool>>> blockSettings) : AbsDisplay{rows, cols}, info1{info1}, info2{info2}, blockSettings{blockSettings}, gdP1{11 * 30, 18 * 30 + 150}, gdP2{11 * 30, 18 * 30 + 150}, gdScore{200, 400} { //fix the gd init later
+GraphicsDisplay::GraphicsDisplay(playerInfo info1, playerInfo info2, int rows, int cols, map<char, vector<vector<bool>>> blockSettings) : AbsDisplay{rows, cols}, gdP1{11 * 30, 18 * 30 + 150}, gdP2{11 * 30, 18 * 30 + 150}, gdScore{200, 400}, info1{info1}, info2{info2}, blockSettings{blockSettings} { //fix the gd init later
     setup(info1);
     setup(info2);
     setupScore();
@@ -64,9 +64,11 @@ int getColourFromType(char type) {
         return Xwindow::Orange;
     } else if (type == 'L') {
         return Xwindow::Blue;
-    } else {
-        return Xwindow::Black;
+    } else if (type == '*') {
+        return Xwindow::Brown;
     }
+
+    return Xwindow::Black;
 }
 
 void GraphicsDisplay::drawCoverNextBlock(playerInfo &info) {
@@ -133,8 +135,8 @@ void GraphicsDisplay::drawCell(int x, int y, int colour, Xwindow &gd) {
 }
 
 void GraphicsDisplay::drawBlind(Xwindow &gd) {
-    gd.fillRectangle(0, ratio * 5, ratio * 11, ratio * 10, Xwindow::Brown); // rows 3-12
-    gd.fillRectangle(ratio * 2, ratio * 3, ratio * 7, ratio * 15, Xwindow::Brown); //cols 3-9
+    gd.fillRectangle(0, ratio * 5, ratio * 11, ratio * 10, Xwindow::White); // rows 3-12
+    gd.fillRectangle(ratio * 2, ratio * 3, ratio * 7, ratio * 15, Xwindow::White); //cols 3-9
 }
 
 void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
@@ -181,7 +183,17 @@ void GraphicsDisplay::notify(Subject<playerInfo> &whoNotified, Action type) {
         }
     } else if (type == Action::Blind) {
         // draw bbb
-        info.player == 1 ? drawBlind(gdP1) : drawBlind(gdP2);
+        info.player == 1 ? drawBlind(gdP2) : drawBlind(gdP1);
+    } else if (type == Action::RemoveBlind) {
+        for (vector<cellInfo> row : info.board) {
+            for (cellInfo cInfo : row) {
+                if (cInfo.isFilled) {
+                    drawCell(cInfo.x, cInfo.y, getColourFromType(cInfo.type), (info.player == 1 ? gdP1 : gdP2));
+                } else {
+                    drawCell(cInfo.x, cInfo.y, Xwindow::Black, (info.player == 1 ? gdP1 : gdP2));
+                }
+            }
+        }
     }
 
     updateInfo(info);
